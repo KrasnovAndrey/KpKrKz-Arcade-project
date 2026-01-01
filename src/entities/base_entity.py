@@ -1,5 +1,6 @@
 import arcade
 from typing import Tuple
+from src.core.asset_registries import TexturePaths
 
 
 class BaseEntity(arcade.Sprite):
@@ -21,7 +22,7 @@ class BaseEntity(arcade.Sprite):
             super().__init__(texture_path, scale=scale)
         else:
             # Стандартная текстура, елси не указана другая
-            super().__init__(":resources:/images/animated_characters/male_person/malePerson_idle.png",
+            super().__init__(TexturePaths.default_entity,
                              scale=scale)
 
         # Параметры сущности

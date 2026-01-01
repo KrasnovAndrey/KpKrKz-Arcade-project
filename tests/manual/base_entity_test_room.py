@@ -6,6 +6,7 @@
 import arcade
 from src.entities.base_entity import BaseEntity
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from src.core.asset_registries import TexturePaths
 
 
 class BaseEntityTestRoom(arcade.Window):
@@ -20,6 +21,8 @@ class BaseEntityTestRoom(arcade.Window):
             max_health=100,
             damage=15,
             speed=3.0,
+            texture_path=TexturePaths.default_entity,
+            scale=1
         )
 
         self.spite_list.append(self.entity)
