@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from pathlib import Path
 from src.core.paths import root
 
 

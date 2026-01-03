@@ -1,39 +1,23 @@
-# path_utils.py
 from pathlib import Path
 import sys
 
 
-def get_medaldungeon_root():
-    """Возвращает путь к папке MedalDungeon"""
+def get_project_root():
+    """Возвращает путь к корню проекта"""
+
     # Если запущено из exe (pyinstaller)
     if getattr(sys, 'frozen', False):
-        # Возвращаем папку, где лежит exe файл
         return Path(sys.executable).parent
 
-    # Если запущено как скрипт Python
-    if sys.argv and sys.argv[0]:  # Если запущен скрипт
-        start = Path(sys.argv[0]).parent
-    else:  # Если интерактивный режим
-        start = Path.cwd()
+    # Определяем путь к текущему файлу (paths.py)
+    current_file = Path(__file__).resolve()
 
-    current = start.resolve()
+    # paths.py -> core -> src -> MedalDungeon
+    project_root = current_file.parent.parent.parent
 
-    # Ищем папку с именем MedalDungeon
-    while True:
-        # Если текущая папка называется MedalDungeon - это она!
-        if current.name == 'MedalDungeon':
-            return current
-
-        # Если дошли до корня файловой системы - останавливаемся
-        if current == current.parent:
-            break
-
-        current = current.parent
-
-    # Если не нашли - возвращаем стартовую папку
-    return start
+    return project_root
 
 
 # Использование:
-root = get_medaldungeon_root()
+root = get_project_root()
 print(root) 
