@@ -2,6 +2,8 @@
 Измененная версия base_entity_test_room для проверки работы TexturePaths
 """
 
+import _bootstrap
+
 import arcade
 from src.entities.base_entity import BaseEntity
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT

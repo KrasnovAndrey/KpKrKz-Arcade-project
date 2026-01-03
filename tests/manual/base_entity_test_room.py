@@ -3,6 +3,8 @@
 Взаимодействие только через код.
 """
 
+import _bootstrap
+
 import arcade
 from src.entities.base_entity import BaseEntity
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
