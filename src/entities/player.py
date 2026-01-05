@@ -1,31 +1,35 @@
 import arcade
 from .base_entity import BaseEntity
-from src.constants import PLAYER_MAX_MANA, PLAYER_MANA_REGEN_RATE
+from src.constants import PLAYER_MAX_HEALTH, PLAYER_SPEED, PLAYER_INVINCIBILITY_TIME, PLAYER_MAX_MANA, \
+    PLAYER_MELEE_DAMAGE, PLAYER_RANGE_DAMAGE, PLAYER_RANGE_MANA_COST, PLAYER_ATTACK_COOLDOWN_TIME, \
+    PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA
 
 
 class Player(BaseEntity):
-    """Класс игрока, наследуемый от BaseEntity."""
+    """Класс игрока"""
 
     def __init__(
             self,
-            max_health: float = 100.0,
-            damage: float = 10.0,
-            speed: float = 3.0,
+            max_health: float = PLAYER_MAX_HEALTH,
+            speed: float = PLAYER_SPEED,
             scale: float = 1.0,
             texture_path: str = None,
-            invincibility_time: float = 3.0,
-            normal_alpha: int = 255,
-            flash_alpha: int = 64,
+            invincibility_time: float = PLAYER_INVINCIBILITY_TIME,
+            normal_alpha: int = PLAYER_NORMAL_ALPHA,
+            flash_alpha: int = PLAYER_FLASH_ALPHA,
             max_mana: float = PLAYER_MAX_MANA,
-            mana_regen_rate: float = PLAYER_MANA_REGEN_RATE,
-            melee_damage: float = 15.0,
-            range_damage: float = 8.0,
-            range_mana_cost: float = 20.0
+            melee_damage: float = PLAYER_MELEE_DAMAGE,
+            range_damage: float = PLAYER_RANGE_DAMAGE,
+            range_mana_cost: float = PLAYER_RANGE_MANA_COST,
+            dash_speed_multiplier: float = PLAYER_DASH_SPEED_MULTIPLIER,
+            dash_duration: float = PLAYER_DASH_DURATION,
+            dash_cooldown: float = PLAYER_DASH_COOLDOWN,
+            attack_cooldown_time: float = PLAYER_ATTACK_COOLDOWN_TIME
+
     ):
-        # Вызываем конструктор родителя с явными параметрами
         super().__init__(
             max_health=max_health,
-            damage=damage,
+            damage=melee_damage,
             speed=speed,
             scale=scale,
             texture_path=texture_path,
@@ -36,10 +40,9 @@ class Player(BaseEntity):
 
         self.original_speed = speed
 
-        # Мана и регенерация
+        # Мана
         self.max_mana = max_mana
         self.current_mana = max_mana
-        self.mana_regen_rate = mana_regen_rate
 
         # Атаки
         self.melee_damage = melee_damage
@@ -49,13 +52,13 @@ class Player(BaseEntity):
         # Состояния атак
         self.is_attacking = False
         self.attack_cooldown = 0.0
-        self.attack_cooldown_time = 0.3  # 0.3 секунды между атаками
+        self.attack_cooldown_time = attack_cooldown_time
 
         # Рывок
         # TODO: Заменить числа константами из constants.py
-        self.dash_speed_multiplier = 5  # Во сколько раз ускоряется
-        self.dash_duration = 0.1  # Длительность рывка в секундах
-        self.dash_cooldown = 1.0 # Кулдаун в секундах
+        self.dash_speed_multiplier = dash_speed_multiplier  # Во сколько раз ускоряется
+        self.dash_duration = dash_duration  # Длительность рывка в секундах
+        self.dash_cooldown = dash_cooldown # Кулдаун в секундах
         self.dash_timer = 0.0
         self.dash_cooldown_timer = 0.0
         self.is_dashing = False
@@ -65,12 +68,9 @@ class Player(BaseEntity):
 
         self.input_locked = False
 
-
-        # Имя для отладки
         self.name = "Player"
 
     def update(self, delta_time: float):
-        """Обновление состояния игрока."""
         super().update(delta_time)
 
         # Кулдаун атаки
@@ -91,9 +91,9 @@ class Player(BaseEntity):
 
     def move_with_keys(self, keys: set):
         """
-        Движение по WASD клавишам.
+        Управление по клавишам.
         """
-        # Сбрасываем движение
+
         self.change_x = 0.0
         self.change_y = 0.0
 
@@ -117,7 +117,6 @@ class Player(BaseEntity):
     def melee_attack(self):
         """
         Ближняя атака.
-        target: опциональная цель (если None - просто анимация)
         """
         if self.attack_cooldown > 0 or not self.is_alive:
             return False
@@ -129,20 +128,14 @@ class Player(BaseEntity):
 
     def range_attack(self):
         """
-        Дальняя атака (затратывает ману).
+        Дальняя атака
         """
         if self.attack_cooldown > 0 or not self.is_alive:
-            print(f"[PLAYER] Не могу атаковать: кулдаун или мертв")
             return False
 
         if self.current_mana < self.range_mana_cost:
-            print(f"[PLAYER] Не хватает маны: {self.current_mana:.1f}/{self.range_mana_cost}")
             return False
 
-        print(f"[PLAYER] 🔮 Дальняя атака! Урон: {self.range_damage}, "
-              f"Мана: -{self.range_mana_cost}")
-
-        # Тратим ману
         self.current_mana -= self.range_mana_cost
 
         self.is_attacking = True

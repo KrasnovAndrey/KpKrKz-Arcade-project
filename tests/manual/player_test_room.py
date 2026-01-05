@@ -20,11 +20,6 @@ class PlayerTestRoom(arcade.Window):
 
         # Одна тестовая сущность
         self.player = Player(
-            max_health=100,
-            damage=15,
-            speed=3.0,
-            texture_path=TexturePaths.default_entity,
-            scale=1
         )
 
         self.spite_list.append(self.player)
