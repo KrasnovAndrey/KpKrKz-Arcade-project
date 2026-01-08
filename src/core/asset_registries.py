@@ -12,6 +12,7 @@ class TexturePaths:
     player_walk_2 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_2.png")
     player_walk_3 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_3.png")
     player_walk_4 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_4.png")
+    sword_1 = str(PROJECT_ROOT / "resources/textures/sword_1.png")
 
 
 @dataclass

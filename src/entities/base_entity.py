@@ -22,7 +22,9 @@ class BaseEntity(arcade.Sprite):
             animation_delay: float = 0.3,
             play_walk_animation: bool = False,
             walk_textures: list = None,
-            walk_delay: float = 0.3
+            walk_delay: float = 0.3,
+            additional_sprites: tuple = tuple(),
+            flip_additional_sprites_on_face_direction_change: bool = True
     ):
 
         if texture_path:
@@ -62,7 +64,8 @@ class BaseEntity(arcade.Sprite):
         self.stay_texture_left = self.texture.flip_horizontally()
 
         if animation_textures:
-            self.animation_textures_right = [arcade.load_texture(file_path=file_path) for file_path in animation_textures]
+            self.animation_textures_right = [arcade.load_texture(file_path=file_path) for file_path in
+                                             animation_textures]
             self.animation_textures_left = [texture.flip_horizontally() for texture in self.animation_textures_right]
             self.current_animation_textures = self.animation_textures_right
         else:
@@ -71,7 +74,7 @@ class BaseEntity(arcade.Sprite):
             self.current_animation_textures = []
 
         if walk_textures:
-            self.walk_textures_right =  [arcade.load_texture(file_path=file_path) for file_path in walk_textures]
+            self.walk_textures_right = [arcade.load_texture(file_path=file_path) for file_path in walk_textures]
             self.walk_textures_left = [texture.flip_horizontally() for texture in self.walk_textures_right]
             self.current_walk_textures = self.walk_textures_right
         else:
@@ -96,6 +99,13 @@ class BaseEntity(arcade.Sprite):
         self.normal_alpha = normal_alpha
         self.flash_alpha = flash_alpha
         self.flashing_frequency = 0.35
+
+        # Дополнительные спрайты, отрисовываются рядом с объектом
+        self.additional_sprites = additional_sprites
+        self.additional_sprite_list = arcade.SpriteList()
+        self.additional_sprites_textures_right = []
+        self.additional_sprites_textures_left = []
+        self.flip_additional_sprites_on_face_direction_change = flip_additional_sprites_on_face_direction_change
 
     def take_damage(self, damage: float) -> bool:
         """Получение урона. Возвращает True если существо умерло."""
@@ -193,6 +203,8 @@ class BaseEntity(arcade.Sprite):
                     if self.current_walk_animation_texture_index == len(self.current_walk_textures):
                         self.current_walk_animation_texture_index = 0
 
+        # Обновляем дополнительные спрайты
+        self.update_additional_sprites()
 
     def set_movement(self, direction: Tuple[float, float]):
         """Установить направление движения."""
@@ -242,11 +254,37 @@ class BaseEntity(arcade.Sprite):
         self.current_animation_textures = self.animation_textures_right
         self.current_walk_textures = self.walk_textures_right
 
+        for (sprite, x, y), new_texture in zip(self.additional_sprites, self.additional_sprites_textures_right):
+            sprite.texture = new_texture
+
     def set_face_direction_left(self):
         self.face_direction = 0
         self.texture = self.stay_texture_left
         self.current_animation_textures = self.animation_textures_left
         self.current_walk_textures = self.walk_textures_left
+
+        for (sprite, x, y), new_texture in zip(self.additional_sprites, self.additional_sprites_textures_left):
+            sprite.texture = new_texture
+
+
+    def setup_additional_sprites(self):
+        """Добавляет все дополнительные спрайты в additional_sprite_list и возвращает его. Также сохраняет текстуры спрайтов"""
+        if self.additional_sprites:
+            for sprite, x, y in self.additional_sprites:
+                self.additional_sprite_list.append(sprite)
+                self.additional_sprites_textures_right.append(sprite.texture)
+                self.additional_sprites_textures_left.append(sprite.texture.flip_horizontally())
+
+        return self.additional_sprite_list
+
+    def update_additional_sprites(self):
+        """Обновляет позиции всех дополнительных спрайтов"""
+        if self.additional_sprites:
+            for sprite, x, y in self.additional_sprites:
+                sprite.center_x = self.center_x + x
+                sprite.center_y = self.center_y + y
+                if self.flip_additional_sprites_on_face_direction_change and self.face_direction == 0:
+                    sprite.center_x -= 2 * x
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}(HP: {self.current_health}/{self.max_health})"

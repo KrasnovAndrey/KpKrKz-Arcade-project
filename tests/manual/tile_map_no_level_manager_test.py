@@ -1,10 +1,5 @@
 import _bootstrap
 
-import pyglet
-
-pyglet.options["texture_min_filter"] = pyglet.gl.GL_NEAREST
-pyglet.options["texture_mag_filter"] = pyglet.gl.GL_NEAREST
-
 import arcade
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.entities import Player
@@ -55,6 +50,9 @@ class MyGame(arcade.Window):
             self.collision_list
         )
 
+        # Дополнительные спрайты игрока
+        self.additional_sprites = self.player.setup_additional_sprites()
+
         self.spawn_player()
 
     def find_start_coordinates(self):
@@ -94,6 +92,7 @@ class MyGame(arcade.Window):
         self.ground_list.draw()
         self.wall_list.draw()
         self.player_list.draw()
+        self.additional_sprites.draw()
 
     def on_key_press(self, key, modifiers):
         self.keys_pressed.add(key)

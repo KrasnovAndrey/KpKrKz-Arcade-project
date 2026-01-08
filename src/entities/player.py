@@ -31,6 +31,11 @@ class Player(BaseEntity):
                            TexturePaths.player_walk_4),
 
     ):
+        # Доп. спрайт - меч в руке
+        additional_sprite = arcade.Sprite(TexturePaths.sword_1, scale=scale)
+        additional_sprite.texture = additional_sprite.texture.flip_horizontally()
+        additional_sprites = ((additional_sprite, 23, 0),)
+
         super().__init__(
             max_health=max_health,
             damage=melee_damage,
@@ -44,7 +49,8 @@ class Player(BaseEntity):
             walk_delay=PLAYER_WALK_ANIMATION_DELAY,
             invincibility_time=invincibility_time,
             normal_alpha=normal_alpha,
-            flash_alpha=flash_alpha
+            flash_alpha=flash_alpha,
+            additional_sprites=additional_sprites
         )
 
         self.original_speed = speed
