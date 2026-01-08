@@ -7,7 +7,11 @@ class TexturePaths:
     """Датакласс для хранения путей к текстурам"""
 
     default_entity = ":resources:/images/animated_characters/male_person/malePerson_idle.png"
-    player = str(PROJECT_ROOT / "resources/textures/entities/player.png")
+    player = str(PROJECT_ROOT / "resources/textures/entities/player/player.png")
+    player_walk_1 = str(PROJECT_ROOT/ "resources/textures/entities/player/walk_1.png")
+    player_walk_2 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_2.png")
+    player_walk_3 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_3.png")
+    player_walk_4 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_4.png")
 
 
 @dataclass

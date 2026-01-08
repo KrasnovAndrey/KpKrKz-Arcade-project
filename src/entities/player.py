@@ -2,7 +2,9 @@ import arcade
 from .base_entity import BaseEntity
 from src.constants import PLAYER_MAX_HEALTH, PLAYER_SPEED, PLAYER_INVINCIBILITY_TIME, PLAYER_MAX_MANA, \
     PLAYER_MELEE_DAMAGE, PLAYER_RANGE_DAMAGE, PLAYER_RANGE_MANA_COST, PLAYER_ATTACK_COOLDOWN_TIME, \
-    PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA
+    PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA, \
+    PLAYER_WALK_ANIMATION_DELAY
+from src.core.asset_registries import TexturePaths
 
 
 class Player(BaseEntity):
@@ -13,7 +15,7 @@ class Player(BaseEntity):
             max_health: float = PLAYER_MAX_HEALTH,
             speed: float = PLAYER_SPEED,
             scale: float = 1.0,
-            texture_path: str = None,
+            texture_path: str = TexturePaths.player,
             invincibility_time: float = PLAYER_INVINCIBILITY_TIME,
             normal_alpha: int = PLAYER_NORMAL_ALPHA,
             flash_alpha: int = PLAYER_FLASH_ALPHA,
@@ -24,7 +26,9 @@ class Player(BaseEntity):
             dash_speed_multiplier: float = PLAYER_DASH_SPEED_MULTIPLIER,
             dash_duration: float = PLAYER_DASH_DURATION,
             dash_cooldown: float = PLAYER_DASH_COOLDOWN,
-            attack_cooldown_time: float = PLAYER_ATTACK_COOLDOWN_TIME
+            attack_cooldown_time: float = PLAYER_ATTACK_COOLDOWN_TIME,
+            walk_textures=(TexturePaths.player_walk_1, TexturePaths.player_walk_2, TexturePaths.player_walk_3,
+                           TexturePaths.player_walk_4),
 
     ):
         super().__init__(
@@ -33,9 +37,14 @@ class Player(BaseEntity):
             speed=speed,
             scale=scale,
             texture_path=texture_path,
+            play_animation=False,
+            animation_textures=None,
+            walk_textures=walk_textures,
+            play_walk_animation=True,
+            walk_delay=PLAYER_WALK_ANIMATION_DELAY,
             invincibility_time=invincibility_time,
             normal_alpha=normal_alpha,
-            flash_alpha=flash_alpha,
+            flash_alpha=flash_alpha
         )
 
         self.original_speed = speed
@@ -55,10 +64,9 @@ class Player(BaseEntity):
         self.attack_cooldown_time = attack_cooldown_time
 
         # Рывок
-        # TODO: Заменить числа константами из constants.py
         self.dash_speed_multiplier = dash_speed_multiplier  # Во сколько раз ускоряется
         self.dash_duration = dash_duration  # Длительность рывка в секундах
-        self.dash_cooldown = dash_cooldown # Кулдаун в секундах
+        self.dash_cooldown = dash_cooldown  # Кулдаун в секундах
         self.dash_timer = 0.0
         self.dash_cooldown_timer = 0.0
         self.is_dashing = False
@@ -185,7 +193,7 @@ class Player(BaseEntity):
         Проверяет можно ли использовать рывок.
         """
         return (
-                (self.change_x != 0 or self.change_y != 0) and # Есть направление, куда делать рывок
+                (self.change_x != 0 or self.change_y != 0) and  # Есть направление, куда делать рывок
                 self.is_alive and
                 not self.is_dashing and  # Не во время рывка
                 self.dash_cooldown_timer <= 0 and
@@ -214,8 +222,7 @@ class Player(BaseEntity):
             self.dash_direction_x /= length
             self.dash_direction_y /= length
 
-        self.speed = self.speed * self.dash_speed_multiplier # Ускоряем персонажа для рывка
-
+        self.speed = self.speed * self.dash_speed_multiplier  # Ускоряем персонажа для рывка
 
         self.input_locked = True
 

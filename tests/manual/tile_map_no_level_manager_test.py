@@ -29,6 +29,7 @@ class MyGame(arcade.Window):
         self.world_width = SCREEN_WIDTH
         self.world_height = SCREEN_HEIGHT
 
+
     def setup(self):
         # Создаём игрока
         self.player = Player(texture_path=TexturePaths.player, scale=TILE_SCALING)
