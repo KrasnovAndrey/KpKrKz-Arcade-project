@@ -145,7 +145,7 @@ class BaseEntity(arcade.Sprite):
 
     def update(self, delta_time):
         """Обновление состояния каждую секунду."""
-        super().update()
+        super().update(delta_time)
 
         # Обновление таймеров
         if self.is_invincible:
