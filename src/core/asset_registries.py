@@ -14,6 +14,12 @@ class TexturePaths:
     player_walk_4 = str(PROJECT_ROOT / "resources/textures/entities/player/walk_4.png")
     sword_1 = str(PROJECT_ROOT / "resources/textures/sword_1.png")
     magic_ball = str(PROJECT_ROOT/ "resources/textures/magic_ball.png")
+    melee_attack_1 = str(PROJECT_ROOT / "resources/textures/melee_attack_1.png")
+    melee_attack_2 = str(PROJECT_ROOT / "resources/textures/melee_attack_2.png")
+    melee_attack_3 = str(PROJECT_ROOT / "resources/textures/melee_attack_3.png")
+    melee_attack_4 = str(PROJECT_ROOT / "resources/textures/melee_attack_4.png")
+    melee_attack_5 = str(PROJECT_ROOT / "resources/textures/melee_attack_5.png")
+    transparent = str(PROJECT_ROOT / "resources/textures/transparent.png")
 
 
 @dataclass

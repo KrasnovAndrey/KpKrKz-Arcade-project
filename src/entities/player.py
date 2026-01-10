@@ -3,8 +3,10 @@ from .base_entity import BaseEntity
 from src.constants import PLAYER_MAX_HEALTH, PLAYER_SPEED, PLAYER_INVINCIBILITY_TIME, PLAYER_MAX_MANA, \
     PLAYER_MELEE_DAMAGE, PLAYER_RANGE_DAMAGE, PLAYER_RANGE_MANA_COST, PLAYER_ATTACK_COOLDOWN_TIME, \
     PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA, \
-    PLAYER_WALK_ANIMATION_DELAY
+    PLAYER_WALK_ANIMATION_DELAY, PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME
 from src.core.asset_registries import TexturePaths
+from .projectiles import MeleeAttack
+from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 class Player(BaseEntity):
@@ -29,7 +31,9 @@ class Player(BaseEntity):
             attack_cooldown_time: float = PLAYER_ATTACK_COOLDOWN_TIME,
             walk_textures=(TexturePaths.player_walk_1, TexturePaths.player_walk_2, TexturePaths.player_walk_3,
                            TexturePaths.player_walk_4),
-
+            enemies_list: arcade.SpriteList = None,
+            projectiles_list: arcade.SpriteList = None,
+            input_lock_after_melee_attack_time = PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME
     ):
         # Доп. спрайт - меч в руке
         additional_sprite = arcade.Sprite(TexturePaths.sword_1, scale=scale)
@@ -50,7 +54,7 @@ class Player(BaseEntity):
             invincibility_time=invincibility_time,
             normal_alpha=normal_alpha,
             flash_alpha=flash_alpha,
-            additional_sprites=additional_sprites
+            additional_sprites=additional_sprites,
         )
 
         self.original_speed = speed
@@ -68,6 +72,7 @@ class Player(BaseEntity):
         self.is_attacking = False
         self.attack_cooldown = 0.0
         self.attack_cooldown_time = attack_cooldown_time
+        self.input_lock_after_melee_attack_time = input_lock_after_melee_attack_time
 
         # Рывок
         self.dash_speed_multiplier = dash_speed_multiplier  # Во сколько раз ускоряется
@@ -81,6 +86,10 @@ class Player(BaseEntity):
         self.dash_direction_y = None
 
         self.input_locked = False
+        self.input_lock_timer = 0.0
+
+        self.enemies_list = enemies_list
+        self.projectiles_list = projectiles_list
 
         self.name = "Player"
 
@@ -103,10 +112,23 @@ class Player(BaseEntity):
         if self.dash_cooldown_timer > 0:
             self.dash_cooldown_timer -= delta_time
 
+        # Атака
+        if self.input_lock_timer > 0:
+            self.input_lock_timer -= delta_time
+        else:
+            self.is_attacking = False
+            self.input_locked = False
+
+        if not self.is_attacking:
+            self.additional_sprite_list[0].angle = 0
+
     def move_with_keys(self, keys: set):
         """
         Управление по клавишам.
         """
+
+        if self.input_locked:
+            return None
 
         self.change_x = 0.0
         self.change_y = 0.0
@@ -128,7 +150,14 @@ class Player(BaseEntity):
             self.change_x *= 0.7071
             self.change_y *= 0.7071
 
-    def melee_attack(self):
+        return None
+
+    def actions_with_mouse(self, mouse_buttons: dict):
+        if arcade.MOUSE_BUTTON_LEFT in mouse_buttons:
+            self.melee_attack(*mouse_buttons[arcade.MOUSE_BUTTON_LEFT])
+
+
+    def melee_attack(self, x, y):
         """
         Ближняя атака.
         """
@@ -137,6 +166,48 @@ class Player(BaseEntity):
 
         self.is_attacking = True
         self.attack_cooldown = self.attack_cooldown_time
+
+
+        x_diff = x - (SCREEN_WIDTH // 2)
+        y_diff = y - (SCREEN_HEIGHT // 2)
+        attack_x = 0
+        attack_y = 0
+        attack_diff_x = 27
+        attack_diff_y = 27
+
+        angle = 0
+        if abs(x_diff) >= abs(y_diff):
+            if x_diff >= 0:
+                angle = 0
+                attack_x = self.center_x + attack_diff_x
+                attack_y = self.center_y
+                if self.face_direction == 0:
+                    self.set_face_direction_right()
+            else:
+                angle = 180
+                attack_x = self.center_x - attack_diff_x
+                attack_y = self.center_y
+                if self.face_direction == 1:
+                    self.set_face_direction_left()
+        else:
+            if y_diff >= 0:
+                angle = -90
+                attack_x = self.center_x
+                attack_y = self.center_y + attack_diff_y
+            else:
+                angle = 90
+                attack_x = self.center_x
+                attack_y = self.center_y - attack_diff_y
+
+        attack = MeleeAttack(attack_x, attack_y, angle, scale=2.5, hit_list=self.enemies_list, damage=self.melee_damage)
+
+        if self.projectiles_list is not None:
+            self.projectiles_list.append(attack)
+
+        self.stop()
+        self.lock_input(duration=self.input_lock_after_melee_attack_time)
+
+        self.additional_sprite_list[0].angle = 30 if self.face_direction == 1 else -30
 
         return True
 
@@ -230,13 +301,19 @@ class Player(BaseEntity):
 
         self.speed = self.speed * self.dash_speed_multiplier  # Ускоряем персонажа для рывка
 
-        self.input_locked = True
+        self.lock_input(duration=self.input_lock_after_melee_attack_time)
 
         # Включаем неуязвимость если нужно
         if self.dash_invincibility:
             self.set_invincible(self.dash_duration)
 
         return True
+
+    def lock_input(self, duration):
+        self.input_locked = True
+        self.input_lock_timer = duration
+
+
 
     def __str__(self) -> str:
         return (f"{self.__class__.__name__}("
