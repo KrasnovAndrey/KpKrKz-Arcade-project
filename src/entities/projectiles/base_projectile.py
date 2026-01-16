@@ -46,6 +46,7 @@ class BaseProjectile(BaseEntity):
         self.center_x = x
         self.center_y = y
         self.set_movement(direction)
+        self.beaten_list = arcade.SpriteList()
 
     def update(self, delta_time):
         super().update(delta_time)
@@ -58,16 +59,20 @@ class BaseProjectile(BaseEntity):
                 self.die()
 
         # Столкновение с существом
-        entities_hit_list = arcade.check_for_collision_with_list(self, self.hit_list)
-        if entities_hit_list:
-            for entity in entities_hit_list:
-                entity.take_damage(self.damage)
-            if self.despawn_on_collision:
-                self.die()
+        if self.hit_list:
+            entities_hit_list = arcade.check_for_collision_with_list(self, self.hit_list)
+            if entities_hit_list:
+                for entity in entities_hit_list:
+                    if entity not in self.beaten_list:
+                        entity.take_damage(self.damage)
+                        self.beaten_list.append(entity)
+                if self.despawn_on_collision:
+                    self.die()
         # Столкновение с препятствием (стеной)
-        obstacles_hit_list = arcade.check_for_collision_with_list(self, self.obstacles_list)
-        if obstacles_hit_list and self.despawn_on_collision:
-            self.die()
+        if self.obstacles_list:
+            obstacles_hit_list = arcade.check_for_collision_with_list(self, self.obstacles_list)
+            if obstacles_hit_list and self.despawn_on_collision:
+                self.die()
 
     def die(self):
         super().die()

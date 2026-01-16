@@ -177,10 +177,11 @@ class BaseEntity(arcade.Sprite):
             # При прекращении движеня сбрасываем анимацию хотьбы
             self.current_walk_animation_texture_index = 0
             self.walk_animation_timer = self.walk_animation_delay
-            self.texture = self.stay_texture_right if self.face_direction == 1 else self.stay_texture_left
+            if not self.play_animation:
+                self.texture = self.stay_texture_right if self.face_direction == 1 else self.stay_texture_left
 
             # Проигрываем стандартную анимацию если персонаж не движется
-            if self.play_animation:
+            if self.play_animation and self.current_animation_textures:
                 self.animation_timer += delta_time
                 if self.animation_timer >= self.animation_delay:
                     self.animation_timer = 0
@@ -194,9 +195,10 @@ class BaseEntity(arcade.Sprite):
             self.animation_timer = self.animation_delay
 
             # Проигрываем анимацию хотьбы если персонаж движется
-            if self.play_walk_animation:
+            if self.play_walk_animation and self.current_walk_textures:
                 self.walk_animation_timer += delta_time
                 if self.walk_animation_timer >= self.walk_animation_delay:
+
                     self.walk_animation_timer = 0
                     self.texture = self.current_walk_textures[self.current_walk_animation_texture_index]
                     self.current_walk_animation_texture_index += 1
