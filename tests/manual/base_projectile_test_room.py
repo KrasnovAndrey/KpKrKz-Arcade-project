@@ -7,6 +7,7 @@ from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.entities import Player
 from src.core.asset_registries import TexturePaths, LevelPaths
 from src.entities import BaseEntity
+from src.entities.enemies import BaseEnemy, Warrior
 from src.entities.projectiles import BaseProjectile, MeleeAttack
 import random
 
@@ -34,13 +35,6 @@ class MyGame(arcade.Window):
         # Создаём игрока
         tile_map = arcade.load_tilemap(LevelPaths.test_level, scaling=TILE_SCALING)
 
-        self.base_entity = BaseEntity(max_health=20, invincibility_time=0)
-        self.base_entity.center_x = 400
-        self.base_entity.center_y = 400
-
-        self.entity_list = arcade.SpriteList()
-        self.entity_list.append(self.base_entity)
-
         self.collision_list = tile_map.sprite_lists["collision"]
         self.wall_list = tile_map.sprite_lists["walls"]
         self.ground_list = tile_map.sprite_lists["ground"]
@@ -53,14 +47,30 @@ class MyGame(arcade.Window):
 
         self.projectile_list = arcade.SpriteList()
 
+        self.base_entity = Warrior(projectiles_list=self.projectile_list)
+        self.base_entity.center_x = 400
+        self.base_entity.center_y = 400
+
+        self.entity_list = arcade.SpriteList()
+        self.entity_list.append(self.base_entity)
+
         self.player = Player(texture_path=TexturePaths.player, scale=TILE_SCALING, projectiles_list=self.projectile_list, enemies_list=self.entity_list)
         self.player_list = arcade.SpriteList()
         self.player_list.append(self.player)
 
+        self.base_entity.set_player_list(self.player_list)
+
         # Создаём физический движок
         self.physics_engine = arcade.PhysicsEngineSimple(
             self.player,
-            self.collision_list
+            self.collision_list,
+        )
+
+        self.collision_list_2 = self.collision_list = tile_map.sprite_lists["collision"]
+
+        self.phycics_engine_2 = arcade.PhysicsEngineSimple(
+            self.base_entity,
+            self.collision_list_2
         )
 
         # Дополнительные спрайты игрока
@@ -80,6 +90,7 @@ class MyGame(arcade.Window):
     def on_update(self, delta_time):
         # Обновляем физический движок
         self.physics_engine.update()
+        self.phycics_engine_2.update()
 
         # Обновляем движение игрока
         self.player_list.update()
@@ -87,6 +98,7 @@ class MyGame(arcade.Window):
         self.player.actions_with_mouse(self.mouse_buttons_pressed)
 
         self.entity_list.update()
+        self.base_entity.update_detection(delta_time=delta_time)
         self.projectile_list.update()
 
         position = (
@@ -133,7 +145,7 @@ class MyGame(arcade.Window):
         text_y -= 30
 
         arcade.draw_text(
-            f"BaseEntityHp: {self.base_entity.current_health}",
+            f"WarriorHp: {self.base_entity.current_health}",
             text_x, text_y,
             arcade.color.WHITE,
             16
@@ -141,9 +153,25 @@ class MyGame(arcade.Window):
         text_y -= 30
 
         arcade.draw_text(
-            f"BaseEntity: {"Alive" if self.base_entity.is_alive else "Dead"}",
+            f"Warrior: {"Alive" if self.base_entity.is_alive else "Dead"}",
             text_x, text_y,
             arcade.color.GREEN if self.base_entity.is_alive else arcade.color.RED,
+            16
+        )
+        text_y -= 30
+
+        arcade.draw_text(
+            f"PlayerHp: {self.player.current_health}",
+            text_x, text_y,
+            arcade.color.WHITE,
+            16
+        )
+        text_y -= 30
+
+        arcade.draw_text(
+            f"Player: {"Alive" if self.player.is_alive else "Dead"}",
+            text_x, text_y,
+            arcade.color.GREEN if self.player.is_alive else arcade.color.RED,
             16
         )
         text_y -= 30

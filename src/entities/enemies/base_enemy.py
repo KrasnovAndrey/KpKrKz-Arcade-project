@@ -4,7 +4,8 @@ from math import sqrt
 
 
 class BaseEnemy(BaseEntity):
-    def __init__(self,  detection_radius: float = 300.0, chasing_time: float = 2.0,  **kwargs):
+    def __init__(self, detection_radius: float = 300.0, chasing_time: float = 2.0,
+                 player_list: arcade.SpriteList = None, **kwargs):
         super().__init__(**kwargs)
 
         # Зона обнаружения
@@ -14,17 +15,23 @@ class BaseEnemy(BaseEntity):
         self.detection_timer = 0.0
         self.chasing_time = chasing_time
 
+        self.player_list = player_list
+
         self.name = "Base Enemy"
 
-
-    def update_detection(self, player_list: arcade.SpriteList, delta_time):
+    def update_detection(self, delta_time):
         """
         Обновляет обнаружение игрока в радиусе.
         """
+
+        player_list = self.player_list
+        if player_list is None:
+            return None
+
         if self.detection_radius <= 0 or not self.is_alive:
             self.player_detected = False
             self.detected_player = None
-            return
+            return None
 
         # Проверяем каждого игрока
         closest_player = None
@@ -35,7 +42,7 @@ class BaseEnemy(BaseEntity):
                 continue
 
             distance = sqrt((self.center_x - player.center_x) ** 2 +
-                        (self.center_y - player.center_y) ** 2)
+                            (self.center_y - player.center_y) ** 2)
 
             if distance < closest_distance:
                 closest_distance = distance
@@ -54,3 +61,8 @@ class BaseEnemy(BaseEntity):
                 self.player_detected = False
                 self.detected_player = None
 
+        return None
+
+    def die(self):
+        super().die()
+        self.stop()
