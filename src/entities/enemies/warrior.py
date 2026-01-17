@@ -1,8 +1,9 @@
 import arcade
 from src.entities.enemies import BaseEnemy
 from src.entities.projectiles import MeleeAttack
+from src.entities import Ghost
 from src.constants import WARRIOR_DAMAGE, WARRIOR_SPEED, WARRIOR_MAX_HEALTH, WARRIOR_MELEE_ATTACK_DISTANCE, \
-    WARRIOR_ATTACK_COOLDOWN, WARRIOR_LOCK_AFTER_TAKING_DAMAGE_TIME
+    WARRIOR_ATTACK_COOLDOWN, WARRIOR_LOCK_AFTER_TAKING_DAMAGE_TIME, WARRIOR_WALK_ANIMATION_DELAY
 from src.core.asset_registries import TexturePaths
 from math import sqrt
 from src.utils.vector_utils import normalize_vector
@@ -18,12 +19,23 @@ class Warrior(BaseEnemy):
             player_list: arcade.SpriteList = None,
             projectiles_list: arcade.SpriteList = None
     ):
+
+        # Доп. спрайт - меч в руке
+        additional_sprite = arcade.Sprite(TexturePaths.sword_2, scale=1)
+        additional_sprites = ((additional_sprite, 23, 0),)
+        walk_textures = (TexturePaths.warrior_walk_1, TexturePaths.warrior_walk_2, TexturePaths.warrior_walk_3,
+                         TexturePaths.warrior_walk_4)
+
         super().__init__(
             invincibility_time=invincibility_time,
             max_health=max_health,
             damage=damage,
             speed=speed,
             texture_path=TexturePaths.warrior,
+            additional_sprites=additional_sprites,
+            play_walk_animation=True,
+            walk_textures=walk_textures,
+            walk_delay=WARRIOR_WALK_ANIMATION_DELAY
         )
 
         self.attack_cooldown_time = attack_cooldown
@@ -36,6 +48,8 @@ class Warrior(BaseEnemy):
         self.locked = False
         self.lock_timer = 0
 
+        self.sword_angle_change_time = 0
+
     def set_player_list(self, player_list: arcade.SpriteList):
         self.player_list = player_list
 
@@ -45,6 +59,8 @@ class Warrior(BaseEnemy):
             if self.lock_timer == 0:
                 self.locked = False
                 self.alpha = self.normal_alpha
+                for sprite in self.additional_sprite_list:
+                    sprite.alpha = self.normal_alpha
 
         else:
             super().update(delta_time)
@@ -64,6 +80,12 @@ class Warrior(BaseEnemy):
             if self.attack_cooldown > 0:
                 self.attack_cooldown = max(self.attack_cooldown - delta_time, 0)
 
+        if self.sword_angle_change_time > 0:
+            self.sword_angle_change_time -= delta_time
+        else:
+            if self.sword_angle_change_time != 0:
+                self.sword_angle_change_time = 0
+            self.additional_sprite_list[0].angle = 0
 
     def melee_attack(self, x, y):
         """
@@ -114,6 +136,8 @@ class Warrior(BaseEnemy):
         if self.projectiles_list is not None:
             self.projectiles_list.append(attack)
 
+        self.additional_sprite_list[0].angle = 40 if self.face_direction == 1 else -40
+        self.sword_angle_change_time = attack.lifetime
 
         return True
 
@@ -122,6 +146,8 @@ class Warrior(BaseEnemy):
         self.lock_timer = duration
         self.stop()
         self.alpha = self.flash_alpha
+        for sprite in self.additional_sprite_list:
+            sprite.alpha = self.flash_alpha
 
     def take_damage(self, damage: float) -> bool:
         self.lock(WARRIOR_LOCK_AFTER_TAKING_DAMAGE_TIME)
@@ -130,5 +156,8 @@ class Warrior(BaseEnemy):
     def die(self):
         super().die()
         self.stop()
+        ghost = Ghost(self.center_x, self.center_y)
+        self.projectiles_list.append(ghost)
         self.remove_from_sprite_lists()
-
+        for sprite in self.additional_sprite_list:
+            sprite.remove_from_sprite_lists()

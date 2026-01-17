@@ -74,7 +74,9 @@ class MyGame(arcade.Window):
         )
 
         # Дополнительные спрайты игрока
-        self.additional_sprites = self.player.setup_additional_sprites()
+        self.additional_sprites = arcade.SpriteList()
+        self.additional_sprites.extend(self.player.setup_additional_sprites())
+        self.additional_sprites.extend(self.base_entity.setup_additional_sprites())
 
         self.spawn_player()
 

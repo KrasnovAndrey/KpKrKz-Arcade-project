@@ -245,8 +245,14 @@ class BaseEntity(arcade.Sprite):
             # Переключаем прозрачность
             if self.alpha == self.normal_alpha:
                 self.alpha = self.flash_alpha
+                if self.additional_sprite_list:
+                    for sprite in self.additional_sprite_list:
+                        sprite.alpha = self.flash_alpha
             else:
                 self.alpha = self.normal_alpha
+                if self.additional_sprite_list:
+                    for sprite in self.additional_sprite_list:
+                        sprite.alpha = self.normal_alpha
 
             self.last_flash_time = self.flashing_timer
 
