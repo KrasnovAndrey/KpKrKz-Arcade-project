@@ -20,6 +20,7 @@ class TexturePaths:
     melee_attack_4 = str(PROJECT_ROOT / "resources/textures/melee_attack_4.png")
     melee_attack_5 = str(PROJECT_ROOT / "resources/textures/melee_attack_5.png")
     transparent = str(PROJECT_ROOT / "resources/textures/transparent.png")
+    warrior = str(PROJECT_ROOT / "resources/textures/entities/knight/walk_1.png")
 
 
 @dataclass
