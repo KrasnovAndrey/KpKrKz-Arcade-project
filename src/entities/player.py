@@ -3,9 +3,9 @@ from .base_entity import BaseEntity
 from src.constants import PLAYER_MAX_HEALTH, PLAYER_SPEED, PLAYER_INVINCIBILITY_TIME, PLAYER_MAX_MANA, \
     PLAYER_MELEE_DAMAGE, PLAYER_RANGE_DAMAGE, PLAYER_RANGE_MANA_COST, PLAYER_ATTACK_COOLDOWN_TIME, \
     PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA, \
-    PLAYER_WALK_ANIMATION_DELAY, PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME
+    PLAYER_WALK_ANIMATION_DELAY, PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME, PLAYER_MANA_PER_HIT
 from src.core.asset_registries import TexturePaths
-from .projectiles import MeleeAttack
+from .projectiles import PlayerMeleeAttack
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
@@ -33,7 +33,8 @@ class Player(BaseEntity):
                            TexturePaths.player_walk_4),
             enemies_list: arcade.SpriteList = None,
             projectiles_list: arcade.SpriteList = None,
-            input_lock_after_melee_attack_time = PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME
+            input_lock_after_melee_attack_time=PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME,
+            mana_per_hit: float = PLAYER_MANA_PER_HIT
     ):
         # Доп. спрайт - меч в руке
         additional_sprite = arcade.Sprite(TexturePaths.sword_1, scale=scale)
@@ -62,6 +63,7 @@ class Player(BaseEntity):
         # Мана
         self.max_mana = max_mana
         self.current_mana = max_mana
+        self.mana_per_hit = mana_per_hit
 
         # Атаки
         self.melee_damage = melee_damage
@@ -156,7 +158,6 @@ class Player(BaseEntity):
         if arcade.MOUSE_BUTTON_LEFT in mouse_buttons:
             self.melee_attack(*mouse_buttons[arcade.MOUSE_BUTTON_LEFT])
 
-
     def melee_attack(self, x, y):
         """
         Ближняя атака.
@@ -166,7 +167,6 @@ class Player(BaseEntity):
 
         self.is_attacking = True
         self.attack_cooldown = self.attack_cooldown_time
-
 
         x_diff = x - (SCREEN_WIDTH // 2)
         y_diff = y - (SCREEN_HEIGHT // 2)
@@ -199,7 +199,8 @@ class Player(BaseEntity):
                 attack_x = self.center_x
                 attack_y = self.center_y - attack_diff_y
 
-        attack = MeleeAttack(attack_x, attack_y, angle, scale=2.5, hit_list=self.enemies_list, damage=self.melee_damage)
+        attack = PlayerMeleeAttack(self, attack_x, attack_y, angle, scale=2.5, hit_list=self.enemies_list,
+                                   damage=self.melee_damage, mana_per_hit=self.mana_per_hit)
 
         if self.projectiles_list is not None:
             self.projectiles_list.append(attack)
@@ -312,8 +313,6 @@ class Player(BaseEntity):
     def lock_input(self, duration):
         self.input_locked = True
         self.input_lock_timer = duration
-
-
 
     def __str__(self) -> str:
         return (f"{self.__class__.__name__}("

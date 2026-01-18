@@ -54,7 +54,11 @@ class MyGame(arcade.Window):
         self.entity_list = arcade.SpriteList()
         self.entity_list.append(self.base_entity)
 
-        self.player = Player(texture_path=TexturePaths.player, scale=TILE_SCALING, projectiles_list=self.projectile_list, enemies_list=self.entity_list)
+        self.player = Player(texture_path=TexturePaths.player, scale=TILE_SCALING,
+                             projectiles_list=self.projectile_list, enemies_list=self.entity_list)
+
+        self.player.current_mana = 0
+
         self.player_list = arcade.SpriteList()
         self.player_list.append(self.player)
 
@@ -171,6 +175,14 @@ class MyGame(arcade.Window):
         text_y -= 30
 
         arcade.draw_text(
+            f"PlayerMana: {self.player.current_mana}",
+            text_x, text_y,
+            arcade.color.CYAN,
+            16
+        )
+        text_y -= 30
+
+        arcade.draw_text(
             f"Player: {'Alive' if self.player.is_alive else 'Dead'}",
             text_x, text_y,
             arcade.color.GREEN if self.player.is_alive else arcade.color.RED,
@@ -184,7 +196,6 @@ class MyGame(arcade.Window):
         if arcade.key.G == key:
             self.spawn_projectile()
 
-
     def on_key_release(self, key, modifiers):
         if key in self.keys_pressed:
             self.keys_pressed.remove(key)
@@ -197,7 +208,9 @@ class MyGame(arcade.Window):
             del self.mouse_buttons_pressed[button]
 
     def spawn_projectile(self):
-        projectile = BaseProjectile(400, 200, direction=(random.choice((-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1)), 1), texture_path=TexturePaths.magic_ball,
+        projectile = BaseProjectile(400, 200,
+                                    direction=(random.choice((-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1)), 1),
+                                    texture_path=TexturePaths.magic_ball,
                                     despawn_on_collision=True, hit_list=self.entity_list,
                                     obstacles_list=self.collision_list, speed=10)
         self.projectile_list.append(projectile)
