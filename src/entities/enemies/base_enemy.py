@@ -5,7 +5,7 @@ from math import sqrt
 
 class BaseEnemy(BaseEntity):
     def __init__(self, detection_radius: float = 300.0, chasing_time: float = 2.0,
-                 player_list: arcade.SpriteList = None, **kwargs):
+                 player_list: arcade.SpriteList = None, collision_list: arcade.SpriteList = None, **kwargs):
         super().__init__(**kwargs)
 
         # Зона обнаружения
@@ -16,6 +16,8 @@ class BaseEnemy(BaseEntity):
         self.chasing_time = chasing_time
 
         self.player_list = player_list
+
+        self.collision_list = collision_list
 
         self.name = "Base Enemy"
 

@@ -128,6 +128,11 @@ class Player(BaseEntity):
         if not self.is_attacking:
             self.additional_sprite_list[0].angle = 0
 
+        if not self.is_flashing:
+            self.alpha = self.normal_alpha
+            for sprite in self.additional_sprite_list:
+                sprite.alpha = self.normal_alpha
+
     def move_with_keys(self, keys: set):
         """
         Управление по клавишам.

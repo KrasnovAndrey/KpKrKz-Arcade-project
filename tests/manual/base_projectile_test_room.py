@@ -1,5 +1,3 @@
-from pyglet.event import EVENT_HANDLE_STATE
-
 import _bootstrap
 
 import arcade
@@ -7,7 +5,7 @@ from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.entities import Player
 from src.core.asset_registries import TexturePaths, LevelPaths
 from src.entities import BaseEntity
-from src.entities.enemies import BaseEnemy, Warrior
+from src.entities.enemies import BaseEnemy, Warrior, Barbarian
 from src.entities.projectiles import BaseProjectile, MeleeAttack
 import random
 
@@ -47,9 +45,9 @@ class MyGame(arcade.Window):
 
         self.projectile_list = arcade.SpriteList()
 
-        self.base_entity = Warrior(projectiles_list=self.projectile_list)
+        self.base_entity = Barbarian(projectiles_list=self.projectile_list, collision_list=self.collision_list)
         self.base_entity.center_x = 400
-        self.base_entity.center_y = 400
+        self.base_entity.center_y = 550
 
         self.entity_list = arcade.SpriteList()
         self.entity_list.append(self.base_entity)
