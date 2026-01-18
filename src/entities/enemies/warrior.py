@@ -17,7 +17,8 @@ class Warrior(BaseEnemy):
             speed: float = WARRIOR_SPEED, invincibility_time: float = 0,
             attack_cooldown: float = WARRIOR_ATTACK_COOLDOWN,
             player_list: arcade.SpriteList = None,
-            projectiles_list: arcade.SpriteList = None
+            projectiles_list: arcade.SpriteList = None,
+            **kwargs
     ):
 
         # Доп. спрайт - меч в руке
@@ -35,7 +36,8 @@ class Warrior(BaseEnemy):
             additional_sprites=additional_sprites,
             play_walk_animation=True,
             walk_textures=walk_textures,
-            walk_delay=WARRIOR_WALK_ANIMATION_DELAY
+            walk_delay=WARRIOR_WALK_ANIMATION_DELAY,
+            **kwargs
         )
 
         self.attack_cooldown_time = attack_cooldown

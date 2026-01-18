@@ -254,6 +254,9 @@ class Player(BaseEntity):
         if self.projectiles_list is not None:
             self.projectiles_list.append(range_attack)
 
+        self.stop()
+        self.lock_input(duration=self.input_lock_after_melee_attack_time)
+
         return True
 
     def get_mana(self) -> float:
