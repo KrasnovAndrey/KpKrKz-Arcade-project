@@ -155,7 +155,7 @@ class MyGame(arcade.Window):
         text_y -= 30
 
         arcade.draw_text(
-            f"Warrior: {"Alive" if self.base_entity.is_alive else "Dead"}",
+            f"Warrior: {'Alive' if self.base_entity.is_alive else 'Dead'}",
             text_x, text_y,
             arcade.color.GREEN if self.base_entity.is_alive else arcade.color.RED,
             16
@@ -171,7 +171,7 @@ class MyGame(arcade.Window):
         text_y -= 30
 
         arcade.draw_text(
-            f"Player: {"Alive" if self.player.is_alive else "Dead"}",
+            f"Player: {'Alive' if self.player.is_alive else 'Dead'}",
             text_x, text_y,
             arcade.color.GREEN if self.player.is_alive else arcade.color.RED,
             16
