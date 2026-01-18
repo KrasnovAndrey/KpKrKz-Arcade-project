@@ -55,7 +55,8 @@ class MyGame(arcade.Window):
         self.entity_list.append(self.base_entity)
 
         self.player = Player(texture_path=TexturePaths.player, scale=TILE_SCALING,
-                             projectiles_list=self.projectile_list, enemies_list=self.entity_list)
+                             projectiles_list=self.projectile_list, enemies_list=self.entity_list,
+                             collision_list=self.collision_list)
 
         self.player.current_mana = 0
 

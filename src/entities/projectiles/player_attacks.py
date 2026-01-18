@@ -1,5 +1,6 @@
 import arcade
-from src.entities.projectiles import MeleeAttack
+from src.core.asset_registries import TexturePaths
+from src.entities.projectiles import BaseProjectile, MeleeAttack
 
 
 class PlayerMeleeAttack(MeleeAttack):
@@ -28,4 +29,31 @@ class PlayerMeleeAttack(MeleeAttack):
         if self.entities_hit_list and not self.mana_gifted:
             self.player.add_mana(self.mana_per_hit)
             self.mana_gifted = True
+
+
+class PlayerRangeAttack(BaseProjectile):
+    def __init__(
+            self,
+            x: float = 0,
+            y: float = 0,
+            damage: float = 3.0,
+            speed: float = 3.0,
+            scale: float = 1.0,
+            direction: tuple = (0, 0),
+            hit_list: arcade.SpriteList = None,
+            obstacles_list: arcade.SpriteList = None
+    ):
+
+        super().__init__(
+            x=x,
+            y=y,
+            damage=damage,
+            speed=speed,
+            scale=scale,
+            direction=direction,
+            hit_list=hit_list,
+            obstacles_list=obstacles_list,
+            despawn_on_collision=True,
+            texture_path=TexturePaths.magic_ball
+        )
 

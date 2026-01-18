@@ -3,10 +3,11 @@ from .base_entity import BaseEntity
 from src.constants import PLAYER_MAX_HEALTH, PLAYER_SPEED, PLAYER_INVINCIBILITY_TIME, PLAYER_MAX_MANA, \
     PLAYER_MELEE_DAMAGE, PLAYER_RANGE_DAMAGE, PLAYER_RANGE_MANA_COST, PLAYER_ATTACK_COOLDOWN_TIME, \
     PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA, \
-    PLAYER_WALK_ANIMATION_DELAY, PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME, PLAYER_MANA_PER_HIT
+    PLAYER_WALK_ANIMATION_DELAY, PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME, PLAYER_MANA_PER_HIT, PLAYER_RANGE_SPEED
 from src.core.asset_registries import TexturePaths
-from .projectiles import PlayerMeleeAttack
+from .projectiles import PlayerMeleeAttack, PlayerRangeAttack
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from src.utils.vector_utils import normalize_vector
 
 
 class Player(BaseEntity):
@@ -34,7 +35,8 @@ class Player(BaseEntity):
             enemies_list: arcade.SpriteList = None,
             projectiles_list: arcade.SpriteList = None,
             input_lock_after_melee_attack_time=PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME,
-            mana_per_hit: float = PLAYER_MANA_PER_HIT
+            mana_per_hit: float = PLAYER_MANA_PER_HIT,
+            collision_list: arcade.SpriteList = None
     ):
         # Доп. спрайт - меч в руке
         additional_sprite = arcade.Sprite(TexturePaths.sword_1, scale=scale)
@@ -92,6 +94,8 @@ class Player(BaseEntity):
 
         self.enemies_list = enemies_list
         self.projectiles_list = projectiles_list
+
+        self.collision_list = collision_list
 
         self.name = "Player"
 
@@ -158,6 +162,9 @@ class Player(BaseEntity):
         if arcade.MOUSE_BUTTON_LEFT in mouse_buttons:
             self.melee_attack(*mouse_buttons[arcade.MOUSE_BUTTON_LEFT])
 
+        if arcade.MOUSE_BUTTON_RIGHT in mouse_buttons:
+            self.range_attack(*mouse_buttons[arcade.MOUSE_BUTTON_RIGHT])
+
     def melee_attack(self, x, y):
         """
         Ближняя атака.
@@ -212,7 +219,7 @@ class Player(BaseEntity):
 
         return True
 
-    def range_attack(self):
+    def range_attack(self, x, y):
         """
         Дальняя атака
         """
@@ -227,8 +234,20 @@ class Player(BaseEntity):
         self.is_attacking = True
         self.attack_cooldown = self.attack_cooldown_time
 
-        # TODO: Создание снаряда
-        # TODO: Анимация и звук
+        x_diff = x - (SCREEN_WIDTH // 2)
+        y_diff = y - (SCREEN_HEIGHT // 2)
+
+        direction = normalize_vector((x_diff, y_diff))
+
+        attack_x = self.center_x + direction[0] * 25
+        attack_y = self.center_y + direction[1] * 25
+
+        range_attack = PlayerRangeAttack(attack_x, attack_y, damage=self.range_damage, scale=1,
+                                         speed=PLAYER_RANGE_SPEED, hit_list=self.enemies_list, direction=direction,
+                                         obstacles_list=self.collision_list)
+
+        if self.projectiles_list is not None:
+            self.projectiles_list.append(range_attack)
 
         return True
 
