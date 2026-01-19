@@ -52,3 +52,8 @@ class MeleeAttack(BaseProjectile):
         ],
         position=(hitbox_x, hitbox_y))
         self.angle = angle
+        
+    def die(self):
+        self.is_alive = False
+        self.current_health = 0
+        self.remove_from_sprite_lists()

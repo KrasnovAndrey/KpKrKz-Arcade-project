@@ -4,7 +4,7 @@ from src.constants import PLAYER_MAX_HEALTH, PLAYER_SPEED, PLAYER_INVINCIBILITY_
     PLAYER_MELEE_DAMAGE, PLAYER_RANGE_DAMAGE, PLAYER_RANGE_MANA_COST, PLAYER_ATTACK_COOLDOWN_TIME, \
     PLAYER_DASH_SPEED_MULTIPLIER, PLAYER_DASH_DURATION, PLAYER_DASH_COOLDOWN, PLAYER_NORMAL_ALPHA, PLAYER_FLASH_ALPHA, \
     PLAYER_WALK_ANIMATION_DELAY, PLAYER_INPUT_LOCK_AFTER_MELEE_ATTACK_TIME, PLAYER_MANA_PER_HIT, PLAYER_RANGE_SPEED
-from src.core.asset_registries import TexturePaths
+from src.core.asset_registries import TexturePaths, SoundPaths
 from .projectiles import PlayerMeleeAttack, PlayerRangeAttack
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.utils.vector_utils import normalize_vector
@@ -38,7 +38,6 @@ class Player(BaseEntity):
             mana_per_hit: float = PLAYER_MANA_PER_HIT,
             collision_list: arcade.SpriteList = None
     ):
-        # Доп. спрайт - меч в руке
         additional_sprite = arcade.Sprite(TexturePaths.sword_1, scale=scale)
         additional_sprite.texture = additional_sprite.texture.flip_horizontally()
         additional_sprites = ((additional_sprite, 23, 0),)
@@ -61,52 +60,42 @@ class Player(BaseEntity):
         )
 
         self.original_speed = speed
-
-        # Мана
         self.max_mana = max_mana
         self.current_mana = max_mana
         self.mana_per_hit = mana_per_hit
-
-        # Атаки
         self.melee_damage = melee_damage
         self.range_damage = range_damage
         self.range_mana_cost = range_mana_cost
-
-        # Состояния атак
         self.is_attacking = False
         self.attack_cooldown = 0.0
         self.attack_cooldown_time = attack_cooldown_time
         self.input_lock_after_melee_attack_time = input_lock_after_melee_attack_time
-
-        # Рывок
-        self.dash_speed_multiplier = dash_speed_multiplier  # Во сколько раз ускоряется
-        self.dash_duration = dash_duration  # Длительность рывка в секундах
-        self.dash_cooldown = dash_cooldown  # Кулдаун в секундах
+        self.dash_speed_multiplier = dash_speed_multiplier
+        self.dash_duration = dash_duration
+        self.dash_cooldown = dash_cooldown
         self.dash_timer = 0.0
         self.dash_cooldown_timer = 0.0
         self.is_dashing = False
-        self.dash_invincibility = True  # Включать ли неуязвимость
+        self.dash_invincibility = True
         self.dash_direction_x = None
         self.dash_direction_y = None
-
         self.input_locked = False
         self.input_lock_timer = 0.0
-
         self.enemies_list = enemies_list
         self.projectiles_list = projectiles_list
-
         self.collision_list = collision_list
-
         self.name = "Player"
+        
+        # Звук шагов
+        self.step_sound_player = None
+        self.step_interval = 0.35
 
     def update(self, delta_time: float):
         super().update(delta_time)
 
-        # Кулдаун атаки
         if self.attack_cooldown > 0:
             self.attack_cooldown = max(0, self.attack_cooldown - delta_time)
 
-        # Таймер рывка
         if self.is_dashing:
             self.dash_timer -= delta_time
             if self.dash_timer <= 0:
@@ -114,11 +103,9 @@ class Player(BaseEntity):
                 self.input_locked = False
                 self.speed = self.original_speed
 
-        # Таймер кулдауна рывка
         if self.dash_cooldown_timer > 0:
             self.dash_cooldown_timer -= delta_time
 
-        # Атака
         if self.input_lock_timer > 0:
             self.input_lock_timer -= delta_time
         else:
@@ -132,19 +119,21 @@ class Player(BaseEntity):
             self.alpha = self.normal_alpha
             for sprite in self.additional_sprite_list:
                 sprite.alpha = self.normal_alpha
+                
+        # Звук шагов при движении
+        if (self.change_x != 0 or self.change_y != 0) and self.is_alive:
+            if not self.step_sound_player or not self.step_sound_player.playing:
+                self.step_sound_player = arcade.play_sound(arcade.load_sound(SoundPaths.player_steps_v1))
+        elif self.step_sound_player and self.step_sound_player.playing:
+            self.step_sound_player.pause()
 
     def move_with_keys(self, keys: set):
-        """
-        Управление по клавишам.
-        """
-
         if self.input_locked:
             return None
 
         self.change_x = 0.0
         self.change_y = 0.0
 
-        # Обрабатываем нажатия
         if arcade.key.W in keys or arcade.key.UP in keys:
             self.change_y = 1.0
         if arcade.key.S in keys or arcade.key.DOWN in keys:
@@ -156,7 +145,6 @@ class Player(BaseEntity):
         if arcade.key.SPACE in keys:
             self.dash()
 
-        # Нормализуем диагональное движение
         if self.change_x != 0 and self.change_y != 0:
             self.change_x *= 0.7071
             self.change_y *= 0.7071
@@ -171,12 +159,9 @@ class Player(BaseEntity):
             self.range_attack(*mouse_buttons[arcade.MOUSE_BUTTON_RIGHT])
 
     def melee_attack(self, x, y):
-        """
-        Ближняя атака.
-        """
         if self.attack_cooldown > 0 or not self.is_alive:
             return False
-
+        
         self.is_attacking = True
         self.attack_cooldown = self.attack_cooldown_time
 
@@ -225,15 +210,15 @@ class Player(BaseEntity):
         return True
 
     def range_attack(self, x, y):
-        """
-        Дальняя атака
-        """
         if self.attack_cooldown > 0 or not self.is_alive:
             return False
 
         if self.current_mana < self.range_mana_cost:
             return False
 
+        # Звук выстрела
+        arcade.play_sound(arcade.load_sound(SoundPaths.player_shot))
+        
         self.current_mana -= self.range_mana_cost
 
         self.is_attacking = True
@@ -306,14 +291,12 @@ class Player(BaseEntity):
         )
 
     def dash(self):
-        """
-        Рывок в направлении текущего движения.
-        Возвращает True если рывок успешно выполнен.
-        """
-        # Проверяем можно ли использовать рывок
         if not self.can_dash():
             return False
 
+        # Звук рывка
+        arcade.play_sound(arcade.load_sound(SoundPaths.player_slesh))
+        
         self.is_dashing = True
         self.dash_timer = self.dash_duration
         self.dash_cooldown_timer = self.dash_cooldown
@@ -321,17 +304,15 @@ class Player(BaseEntity):
         self.dash_direction_x = self.change_x
         self.dash_direction_y = self.change_y
 
-        # Нормализуем направление рывка
         length = (self.dash_direction_x ** 2 + self.dash_direction_y ** 2) ** 0.5
         if length > 0:
             self.dash_direction_x /= length
             self.dash_direction_y /= length
 
-        self.speed = self.speed * self.dash_speed_multiplier  # Ускоряем персонажа для рывка
+        self.speed = self.speed * self.dash_speed_multiplier
 
         self.lock_input(duration=self.input_lock_after_melee_attack_time)
 
-        # Включаем неуязвимость если нужно
         if self.dash_invincibility:
             self.set_invincible(self.dash_duration)
 

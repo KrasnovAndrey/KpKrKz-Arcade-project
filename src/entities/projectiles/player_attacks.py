@@ -1,5 +1,5 @@
 import arcade
-from src.core.asset_registries import TexturePaths
+from src.core.asset_registries import TexturePaths, SoundPaths
 from src.entities.projectiles import BaseProjectile, MeleeAttack
 
 
@@ -19,6 +19,9 @@ class PlayerMeleeAttack(MeleeAttack):
         super().__init__(x=x, y=y, angle=angle, damage=damage, scale=scale, hit_list=hit_list,
                          animation_delay=animation_delay)
 
+        # Звук удара мечом
+        arcade.play_sound(arcade.load_sound(SoundPaths.player_sword))
+        
         self.player = player
         self.mana_per_hit = mana_per_hit
         self.mana_gifted = False

@@ -77,7 +77,8 @@ class BaseProjectile(BaseEntity):
                 self.die()
 
     def die(self):
-        super().die()
+        self.is_alive = False
+        self.current_health = 0
         self.remove_from_sprite_lists()
 
 
