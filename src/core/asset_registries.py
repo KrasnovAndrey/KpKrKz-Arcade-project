@@ -18,6 +18,8 @@ class TexturePaths:
     sword_2 = str(PROJECT_ROOT / "resources/textures/sword_2.png")
     axe_1 = str(PROJECT_ROOT / "resources/textures/axe_1.png")
     axe_2 = str(PROJECT_ROOT / "resources/textures/axe_2.png")
+    bow = str(PROJECT_ROOT / "resources/textures/bow.png")
+    arrow = str(PROJECT_ROOT / "resources/textures/arrow.png")
     magic_ball = str(PROJECT_ROOT / "resources/textures/magic_ball.png")
 
     melee_attack_1 = str(PROJECT_ROOT / "resources/textures/melee_attack_1.png")
@@ -39,6 +41,12 @@ class TexturePaths:
     barbarian_walk_2 = str(PROJECT_ROOT / "resources/textures/entities/barbarian/walk_2.png")
     barbarian_walk_3 = str(PROJECT_ROOT / "resources/textures/entities/barbarian/walk_3.png")
     barbarian_walk_4 = str(PROJECT_ROOT / "resources/textures/entities/barbarian/walk_4.png")
+
+    archer = str(PROJECT_ROOT / "resources/textures/entities/archer/archer.png")
+    archer_walk_1 = str(PROJECT_ROOT / "resources/textures/entities/archer/walk_1.png")
+    archer_walk_2 = str(PROJECT_ROOT / "resources/textures/entities/archer/walk_2.png")
+    archer_walk_3 = str(PROJECT_ROOT / "resources/textures/entities/archer/walk_3.png")
+    archer_walk_4 = str(PROJECT_ROOT / "resources/textures/entities/archer/walk_4.png")
 
     death_ghost_1 = str(PROJECT_ROOT / "resources/textures/death/death_ghost_1.png")
     death_ghost_2 = str(PROJECT_ROOT / "resources/textures/death/death_ghost_2.png")
