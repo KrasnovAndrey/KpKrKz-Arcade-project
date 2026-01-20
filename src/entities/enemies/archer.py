@@ -4,9 +4,10 @@ from src.entities.projectiles import MeleeAttack
 from src.entities import Ghost
 from src.constants import ARCHER_MELEE_DAMAGE, ARCHER_RANGE_DAMAGE, ARCHER_SPEED, ARCHER_RANGE_SPEED, ARCHER_MAX_HEALTH, \
     ARCHER_MELEE_ATTACK_DISTANCE, ARCHER_ATTACK_COOLDOWN, ARCHER_LOCK_AFTER_TAKING_DAMAGE_TIME, \
-    ARCHER_WALK_ANIMATION_DELAY, ARCHER_SCARE_DISTANCE, ARCHER_RANGE_ATTACK_DISTANCE
+    ARCHER_WALK_ANIMATION_DELAY, ARCHER_SCARE_DISTANCE
 from src.core.asset_registries import TexturePaths
-from math import sqrt
+from src.entities.projectiles import Arrow
+from math import sqrt, degrees, atan2
 from src.utils.vector_utils import normalize_vector
 
 
@@ -75,13 +76,15 @@ class Archer(BaseEnemy):
                 player_distance = sqrt(abs(self.center_x - self.detected_player.center_x) ** 2 + abs(
                     self.center_y - self.detected_player.center_y) ** 2)
 
-                if player_distance > ARCHER_MELEE_ATTACK_DISTANCE:
+                if player_distance < ARCHER_SCARE_DISTANCE:
                     direction = (-(self.detected_player.center_x - self.center_x),
                                  -(self.detected_player.center_y - self.center_y))
 
                     self.set_movement(normalize_vector(direction))
+                    if player_distance < ARCHER_MELEE_ATTACK_DISTANCE:
+                        self.melee_attack(self.detected_player.center_x, self.detected_player.center_y)
                 else:
-                    self.melee_attack(self.detected_player.center_x, self.detected_player.center_y)
+                    self.range_attack(self.detected_player.center_x, self.detected_player.center_y)
 
             if self.attack_cooldown > 0:
                 self.attack_cooldown = max(self.attack_cooldown - delta_time, 0)
@@ -147,13 +150,42 @@ class Archer(BaseEnemy):
 
         return True
 
-    def lock(self, duration: float):
+    def range_attack(self, x, y):
+
+        if self.attack_cooldown > 0 or not self.is_alive:
+            return False
+
+        self.attack_cooldown = self.attack_cooldown_time
+
+        x_diff = x - self.center_x
+        y_diff = y - self.center_y
+
+        direction = normalize_vector((x_diff, y_diff))
+
+        attack_x = self.center_x + direction[0] * 25
+        attack_y = self.center_y + direction[1] * 25
+
+        projectile = Arrow(attack_x, attack_y,
+                           angle=self.get_angle_to_target(self.detected_player.center_x, self.detected_player.center_y),
+                           damage=self.range_damage, scale=1.5,
+                           speed=ARCHER_RANGE_SPEED, hit_list=self.player_list, direction=direction,
+                           obstacles_list=self.collision_list)
+
+        if self.projectiles_list is not None:
+            self.projectiles_list.append(projectile)
+
+        self.lock(duration=ARCHER_LOCK_AFTER_TAKING_DAMAGE_TIME, change_alpha=False)
+
+        return True
+
+    def lock(self, duration: float, change_alpha: bool = True):
         self.locked = True
         self.lock_timer = duration
         self.stop()
-        self.alpha = self.flash_alpha
-        for sprite in self.additional_sprite_list:
-            sprite.alpha = self.flash_alpha
+        if change_alpha:
+            self.alpha = self.flash_alpha
+            for sprite in self.additional_sprite_list:
+                sprite.alpha = self.flash_alpha
 
     def take_damage(self, damage: float) -> bool:
         self.lock(ARCHER_LOCK_AFTER_TAKING_DAMAGE_TIME)
@@ -167,3 +199,9 @@ class Archer(BaseEnemy):
         self.remove_from_sprite_lists()
         for sprite, x, y in self.additional_sprites:
             sprite.remove_from_sprite_lists()
+
+    def get_angle_to_target(self, target_x, target_y):
+        """Возвращает угол поворота спрайта (0 = вверх) к цели"""
+        dx = target_x - self.center_x
+        dy = target_y - self.center_y
+        return -(degrees(atan2(dy, dx)) - 90) % 360
