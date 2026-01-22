@@ -3,7 +3,7 @@ import _bootstrap
 import arcade
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from src.entities import Player
-from src.core.asset_registries import TexturePaths, LevelPaths
+from src.core.asset_registries import TexturePaths, LevelPaths, SoundPaths
 from src.entities import BaseEntity
 from src.entities.enemies import BaseEnemy, Warrior, Barbarian, Archer
 from src.entities.projectiles import BaseProjectile, MeleeAttack
@@ -30,7 +30,6 @@ class MyGame(arcade.Window):
         self.world_height = SCREEN_HEIGHT
 
     def setup(self):
-        # Создаём игрока
         tile_map = arcade.load_tilemap(LevelPaths.test_level, scaling=TILE_SCALING)
 
         self.collision_list = tile_map.sprite_lists["collision"]
@@ -63,7 +62,6 @@ class MyGame(arcade.Window):
 
         self.base_entity.set_player_list(self.player_list)
 
-        # Создаём физический движок
         self.physics_engine = arcade.PhysicsEngineSimple(
             self.player,
             self.collision_list,
@@ -76,7 +74,6 @@ class MyGame(arcade.Window):
             self.collision_list_2
         )
 
-        # Дополнительные спрайты игрока
         self.additional_sprites = arcade.SpriteList()
         self.additional_sprites.extend(self.player.setup_additional_sprites())
         self.additional_sprites.extend(self.base_entity.setup_additional_sprites())
@@ -93,11 +90,9 @@ class MyGame(arcade.Window):
         self.player.center_y = y
 
     def on_update(self, delta_time):
-        # Обновляем физический движок
         self.physics_engine.update()
         self.phycics_engine_2.update()
 
-        # Обновляем движение игрока
         self.player_list.update()
         self.player.move_with_keys(self.keys_pressed)
         self.player.actions_with_mouse(self.mouse_buttons_pressed)
@@ -110,14 +105,13 @@ class MyGame(arcade.Window):
             self.player.center_x,
             self.player.center_y
         )
-        self.world_camera.position = arcade.math.lerp_2d(  # Изменяем позицию камеры
+        self.world_camera.position = arcade.math.lerp_2d(
             self.world_camera.position,
             position,
-            CAMERA_LERP,  # Плавность следования камеры
+            CAMERA_LERP,
         )
 
     def on_draw(self):
-        """Отрисовка всех спрайтов"""
         self.clear()
 
         self.world_camera.use()
@@ -207,6 +201,7 @@ class MyGame(arcade.Window):
             del self.mouse_buttons_pressed[button]
 
     def spawn_projectile(self):
+        arcade.play_sound(arcade.load_sound(SoundPaths.player_shot))
         projectile = BaseProjectile(400, 200,
                                     direction=(random.choice((-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1)), 1),
                                     texture_path=TexturePaths.magic_ball,

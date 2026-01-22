@@ -1,6 +1,6 @@
 import arcade
 from typing import Tuple
-from src.core.asset_registries import TexturePaths
+from src.core.asset_registries import TexturePaths, SoundPaths
 
 
 class BaseEntity(arcade.Sprite):
@@ -108,13 +108,17 @@ class BaseEntity(arcade.Sprite):
         self.flip_additional_sprites_on_face_direction_change = flip_additional_sprites_on_face_direction_change
 
     def take_damage(self, damage: float) -> bool:
-        """Получение урона. Возвращает True если существо умерло."""
         if self.is_invincible or not self.is_alive:
             return False
 
         self.current_health -= damage
+        
+        # Звук получения урона
+        if hasattr(self, 'name') and self.name == "Player":
+            arcade.play_sound(arcade.load_sound(SoundPaths.player_pain))
+        else:
+            arcade.play_sound(arcade.load_sound(SoundPaths.enemy_hit))
 
-        # Делаем неуязвимым и запускаем мерцание
         self.set_invincible(self.invincibility_time)
         self.set_flashing(self.invincibility_time)
 
@@ -125,10 +129,14 @@ class BaseEntity(arcade.Sprite):
         return False
 
     def die(self):
-        """Смерть существа."""
         self.is_alive = False
         self.current_health = 0
-        # Базовый класс только помечает как мертвого
+        
+        # Звук смерти
+        if hasattr(self, 'name') and self.name == "Player":
+            arcade.play_sound(arcade.load_sound(SoundPaths.player_died))
+        else:
+            arcade.play_sound(arcade.load_sound(SoundPaths.enemy_died))
 
     def heal(self, amount: float):
         """Восстановление здоровья."""

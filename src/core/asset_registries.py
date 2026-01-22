@@ -56,6 +56,22 @@ class TexturePaths:
 
 
 @dataclass
+class SoundPaths:
+    """Датакласс для хранения путей к звукам"""
+    
+    player_shot = str(PROJECT_ROOT / "resources/sounds/player/shot.wav")
+    player_pain = str(PROJECT_ROOT / "resources/sounds/player/pain.wav")
+    player_died = str(PROJECT_ROOT / "resources/sounds/player/died.wav")
+    player_sword = str(PROJECT_ROOT / "resources/sounds/player/sword.wav")
+    player_slesh = str(PROJECT_ROOT / "resources/sounds/player/slesh.wav")
+    player_steps_v1 = str(PROJECT_ROOT / "resources/sounds/player/steps_v1.wav")
+    player_steps_v2 = str(PROJECT_ROOT / "resources/sounds/player/steps_v2.wav")
+    
+    enemy_died = str(PROJECT_ROOT / "resources/sounds/enemies/died_enemy.wav")
+    enemy_hit = str(PROJECT_ROOT / "resources/sounds/enemies/hit.wav")
+
+
+@dataclass
 class LevelPaths:
     """Датакласс для хранения путей к уровням"""
 
