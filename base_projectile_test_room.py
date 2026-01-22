@@ -30,12 +30,12 @@ class MyGame(arcade.Window):
         self.world_height = SCREEN_HEIGHT
 
     def setup(self):
-        tile_map = arcade.load_tilemap(LevelPaths.test_level, scaling=TILE_SCALING)
+        tile_map = arcade.load_tilemap(LevelPaths.test_level_2, scaling=TILE_SCALING)
 
-        self.collision_list = tile_map.sprite_lists["collision"]
-        self.wall_list = tile_map.sprite_lists["walls"]
-        self.ground_list = tile_map.sprite_lists["ground"]
-        self.start_list = tile_map.sprite_lists["start"]
+        self.collision_list = tile_map.sprite_lists["Collision"]
+        self.wall_list = tile_map.sprite_lists["Walls"]
+        self.ground_list = tile_map.sprite_lists["Ground"]
+        self.start_list = tile_map.sprite_lists["Start"]
 
         self.tile_map = tile_map
 
@@ -67,7 +67,7 @@ class MyGame(arcade.Window):
             self.collision_list,
         )
 
-        self.collision_list_2 = self.collision_list = tile_map.sprite_lists["collision"]
+        self.collision_list_2 = self.collision_list = tile_map.sprite_lists["Collision"]
 
         self.phycics_engine_2 = arcade.PhysicsEngineSimple(
             self.base_entity,

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="5" height="5" tilewidth="48" tileheight="48" infinite="0" nextlayerid="14" nextobjectid="1">
+ <tileset firstgid="1" name="tilemap" tilewidth="48" tileheight="48" spacing="3" tilecount="132" columns="12">
+  <image source="tilemap.png" width="609" height="558"/>
+ </tileset>
+ <layer id="1" name="Ground" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJwzZGBgMKQxBgD5OATK
+  </data>
+ </layer>
+ <layer id="2" name="Finish" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBg4GZgYOBhoB0AAAjUABg=
+  </data>
+ </layer>
+ <layer id="4" name="Walls" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="5" name="Collision" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="6" name="Start" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAehJGgFhkAABM0AFc=
+  </data>
+ </layer>
+ <layer id="7" name="Warrior" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="8" name="Barbarian" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="9" name="Archer" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="11" name="Spikes" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="12" name="Medals" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+ <layer id="13" name="Decorations" width="5" height="5">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA9AAAAZAAB
+  </data>
+ </layer>
+</map>

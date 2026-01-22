@@ -75,4 +75,5 @@ class SoundPaths:
 class LevelPaths:
     """Датакласс для хранения путей к уровням"""
 
-    test_level = str(PROJECT_ROOT / "resources/levels/test_map.tmx")
+    test_level = str(PROJECT_ROOT / "resources/levels/test_map_3.tmx")
+    test_level_2 = str(PROJECT_ROOT / "resources/levels/test_map_2.tmx")
