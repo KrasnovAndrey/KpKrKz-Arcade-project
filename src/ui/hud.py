@@ -8,6 +8,7 @@ class GameHUD:
         self.window = window
 
         self.full_heart_path = TexturePaths.ui_full_heart
+        self.half_heart_path = TexturePaths.ui_half_heart
         self.empty_heart_path = TexturePaths.ui_empty_heart
 
         self.full_mana_path = TexturePaths.ui_full_mana_ball
@@ -19,8 +20,8 @@ class GameHUD:
         self.heart_size = 32
         self.icon_margin = 8
 
-        self.max_mana = 10
-        self.mana_size = 18
+        self.max_mana = 4
+        self.mana_size = 24
 
         self.currency_icon_size = 24
 
@@ -71,7 +72,7 @@ class GameHUD:
         self._mana_sprites.clear()
 
         for i in range(self.max_mana):
-            x = start_x + i * (self.mana_size + 2)
+            x = start_x + i * (self.mana_size + 4)
             texture_path = self.full_mana_path if i < value else self.empty_mana_path
 
             sprite = arcade.Sprite(texture_path)
