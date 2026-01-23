@@ -188,8 +188,8 @@ class MyGame(arcade.Window):
 
         self.gui_camera.use()
 
-        self.hud.display_health(10)
-        self.hud.display_mana(2)
+        self.hud.display_health(self.player.current_health)
+        self.hud.display_mana(self.player.current_mana)
         self.hud.display_currency(0)
 
     def on_key_press(self, key, modifiers):
