@@ -3,6 +3,7 @@ from src.core.asset_registries import LevelPaths
 from src.constants import TILE_SCALING, BACKGROUND_COLOR, CAMERA_LERP
 from src.entities import Player
 from src.entities.enemies import Warrior, Barbarian, Archer
+from src.ui import GameHUD
 
 
 class GameView(arcade.View):
@@ -44,6 +45,8 @@ class GameView(arcade.View):
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
 
+        self.hud = GameHUD(window=self)
+
     def on_update(self, delta_time):
         self.update_physics()
 
@@ -80,6 +83,11 @@ class GameView(arcade.View):
         self.player_list.draw()
         self.additional_sprites.draw()
         self.projectile_list.draw()
+
+        self.gui_camera.use()
+        self.hud.display_health(self.player.current_health)
+        self.hud.display_mana(self.player.current_mana)
+        self.hud.display_currency(0)
 
     def spawn_enemies(self):
         self.spawn_warriors()
