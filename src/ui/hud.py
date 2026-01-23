@@ -13,6 +13,8 @@ class GameHUD:
         self.full_mana_path = TexturePaths.ui_full_mana_ball
         self.empty_mana_path = TexturePaths.ui_empty_mana_ball
 
+        self.medal_path = TexturePaths.ui_medal
+
         self.max_hearts = 10
         self.heart_size = 32
         self.icon_margin = 8
@@ -20,8 +22,11 @@ class GameHUD:
         self.max_mana = 4
         self.mana_size = 24
 
+        self.currency_icon_size = 24
+
         self._hearts_sprites = arcade.SpriteList(use_spatial_hash=False)
         self._mana_sprites = arcade.SpriteList(use_spatial_hash=False)
+        self._currency_sprites = arcade.SpriteList(use_spatial_hash=False)
 
     def display_health(self, value: int):
         if value < 0: # Кто так не делает, тому гореть в аду
@@ -77,4 +82,19 @@ class GameHUD:
         self._mana_sprites.draw()
 
     def display_currency(self, value: int):
-        pass
+        start_x = self.icon_margin + self.currency_icon_size / 2
+        y = self.window.height - self.icon_margin - self.heart_size - self.icon_margin - self.mana_size - self.icon_margin - self.currency_icon_size / 2
+
+        self._currency_sprites.clear()
+
+        sprite = arcade.Sprite(self.medal_path)
+        sprite.center_x = start_x
+        sprite.center_y = y
+        self._currency_sprites.append(sprite)
+
+        self._currency_sprites.draw()
+
+        text_x = start_x + self.currency_icon_size / 2 + self.icon_margin
+        text_y = y - self.currency_icon_size / 4
+
+        arcade.draw_text(str(value), text_x, text_y, arcade.color.WHITE, 16)
