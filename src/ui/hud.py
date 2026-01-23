@@ -19,10 +19,11 @@ class GameHUD:
     def display_health(self, value: int):
         if value < 0: # Кто так не делает, тому гореть в аду
             value = 0
+        if value > self.max_hearts * 2:
+            value = self.max_hearts * 2
 
         full_hearts = value // 2
-        if full_hearts > self.max_hearts:
-            full_hearts = self.max_hearts
+        half_heart = value % 2
 
         start_x = self.icon_margin + self.heart_size / 2
         y = self.window.height - self.icon_margin - self.heart_size / 2
@@ -34,6 +35,8 @@ class GameHUD:
 
             if i < full_hearts:
                 texture_path = self.full_heart_path
+            elif i == full_hearts and half_heart:
+                texture_path = self.half_heart_path
             else:
                 texture_path = self.empty_heart_path
 
