@@ -54,6 +54,15 @@ class TexturePaths:
     death_ghost_4 = str(PROJECT_ROOT / "resources/textures/death/death_ghost_4.png")
     death_ghost_5 = str(PROJECT_ROOT / "resources/textures/death/death_ghost_5.png")
 
+    ui_full_heart = str(PROJECT_ROOT / "resources/textures/ui/full_heart.png")
+    ui_half_heart = str(PROJECT_ROOT / "resources/textures/ui/half_heart.png")
+    ui_empty_heart = str(PROJECT_ROOT / "resources/textures/ui/empty_heart.png")
+
+    ui_full_mana_ball = str(PROJECT_ROOT / "resources/textures/ui/full_mana_ball.png")
+    ui_empty_mana_ball = str(PROJECT_ROOT / "resources/textures/ui/empty_mana_ball.png")
+
+    ui_medal = str(PROJECT_ROOT / "resources/textures/ui/medal.png")
+
 
 @dataclass
 class SoundPaths:

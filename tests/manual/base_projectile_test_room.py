@@ -7,6 +7,7 @@ from src.core.asset_registries import TexturePaths, LevelPaths, SoundPaths
 from src.entities import BaseEntity
 from src.entities.enemies import BaseEnemy, Warrior, Barbarian, Archer
 from src.entities.projectiles import BaseProjectile, MeleeAttack
+from src.ui.hud import GameHUD
 import random
 
 # Задаём размер окна
@@ -28,6 +29,8 @@ class MyGame(arcade.Window):
 
         self.world_width = SCREEN_WIDTH
         self.world_height = SCREEN_HEIGHT
+
+        self.hud = GameHUD(self)
 
     def setup(self):
         tile_map = arcade.load_tilemap(LevelPaths.test_level_2, scaling=TILE_SCALING)
@@ -182,6 +185,12 @@ class MyGame(arcade.Window):
             16
         )
         text_y -= 30
+
+        self.gui_camera.use()
+
+        self.hud.display_health(self.player.current_health)
+        self.hud.display_mana(self.player.current_mana)
+        self.hud.display_currency(0)
 
     def on_key_press(self, key, modifiers):
         self.keys_pressed.add(key)
