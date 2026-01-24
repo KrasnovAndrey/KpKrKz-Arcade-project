@@ -79,6 +79,9 @@ class Warrior(BaseEnemy):
                 else:
                     self.melee_attack(self.detected_player.center_x, self.detected_player.center_y)
 
+            else:
+                self.stop()
+
             if self.attack_cooldown > 0:
                 self.attack_cooldown = max(self.attack_cooldown - delta_time, 0)
 

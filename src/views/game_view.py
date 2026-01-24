@@ -1,6 +1,6 @@
 import arcade
-from src.core.asset_registries import LevelPaths
-from src.constants import TILE_SCALING, BACKGROUND_COLOR, CAMERA_LERP
+from src.core.asset_registries import LevelPaths, TexturePaths
+from src.constants import TILE_SCALING, BACKGROUND_COLOR, CAMERA_LERP, SPIKES_DAMAGE, HEALTH_PER_HEALTH_BOTTLE
 from src.entities import Player
 from src.entities.enemies import Warrior, Barbarian, Archer
 from src.ui import GameHUD
@@ -13,6 +13,8 @@ class GameView(arcade.View):
 
         self.keys_pressed = set()
         self.mouse_buttons_pressed = dict()
+
+        self.level_finished = False
 
         self.setup()
 
@@ -31,16 +33,34 @@ class GameView(arcade.View):
         self.spikes_list = self.tile_map.sprite_lists["Spikes"]
         self.spikes_list = self.tile_map.sprite_lists["Spikes"]
 
+        try:
+            self.decoration_list_2 = self.tile_map.sprite_lists["Decorations2"]
+        except KeyError:
+            self.decoration_list_2 = arcade.SpriteList()
+
+        try:
+            self.secret_walls_list = self.tile_map.sprite_lists["SecretWalls"]
+        except KeyError:
+            self.secret_walls_list = arcade.SpriteList()
+
+        try:
+            self.health_bottle_list = self.tile_map.sprite_lists["HealthBottle"]
+        except KeyError:
+            self.health_bottle_list = arcade.SpriteList()
+
         self.physics_engines = []
 
         self.projectile_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
+        self.medals_list = arcade.SpriteList()
         self.enemies_list = arcade.SpriteList()
         self.additional_sprites = arcade.SpriteList()
 
         self.spawn_enemies()
         self.player = None
         self.spawn_player()
+
+        self.spawn_medals()
 
         self.world_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
@@ -69,6 +89,12 @@ class GameView(arcade.View):
 
         self.projectile_list.update()
 
+        self.check_player_and_spikes_collision()
+        self.check_player_and_medals_collision()
+        self.check_player_and_health_bottles_collision()
+
+        self.check_finish()
+
     def on_draw(self):
         self.clear()
 
@@ -78,16 +104,20 @@ class GameView(arcade.View):
         self.wall_list.draw()
         self.finish_list.draw()
         self.decoration_list.draw()
+        self.decoration_list_2.draw()
+        self.health_bottle_list.draw()
+        self.medals_list.draw()
         self.spikes_list.draw()
         self.enemies_list.draw()
         self.player_list.draw()
         self.additional_sprites.draw()
         self.projectile_list.draw()
+        self.secret_walls_list.draw()
 
         self.gui_camera.use()
         self.hud.display_health(self.player.current_health)
         self.hud.display_mana(self.player.current_mana)
-        self.hud.display_currency(0)
+        self.hud.display_currency(self.window.game_data["medals"])
 
     def spawn_enemies(self):
         self.spawn_warriors()
@@ -153,8 +183,12 @@ class GameView(arcade.View):
         self.physics_engines.append(physics_engine)
 
     def spawn_medals(self):
-        # TODO: Сделать спавн медалек
-        pass
+        medals = self.tile_map.sprite_lists["Medals"]
+        for sprite in medals:
+            medal = arcade.Sprite(path_or_texture=arcade.load_texture(TexturePaths.ui_medal))
+            medal.center_x = sprite.center_x
+            medal.center_y = sprite.center_y
+            self.medals_list.append(medal)
 
     def update_enemies_detection(self, delta_time: float):
         for enemy in self.enemies_list:
@@ -163,6 +197,31 @@ class GameView(arcade.View):
     def update_physics(self):
         for physics_engine in self.physics_engines:
             physics_engine.update()
+
+    def check_player_and_spikes_collision(self):
+        collision_list = arcade.check_for_collision_with_list(self.player, self.spikes_list)
+        if collision_list:
+            self.player.take_damage(SPIKES_DAMAGE)
+
+    def check_player_and_medals_collision(self):
+        collision_list = arcade.check_for_collision_with_list(self.player, self.medals_list)
+        for medal in collision_list:
+            self.window.game_data["medals"] += 1
+            medal.remove_from_sprite_lists()
+
+    def check_player_and_health_bottles_collision(self):
+        collision_list = arcade.check_for_collision_with_list(self.player, self.health_bottle_list)
+        if collision_list:
+            self.player.heal(HEALTH_PER_HEALTH_BOTTLE)
+            for bottle in collision_list:
+                bottle.remove_from_sprite_lists()
+
+    def check_finish(self):
+        """Завершить уровень, когда игрок вошел в выход"""
+        collision_list = arcade.check_for_collision_with_list(self.player, self.finish_list)
+        if collision_list and not self.level_finished:
+            self.window.finish_level()
+            self.level_finished = True
 
     def on_key_press(self, key, modifiers):
         self.keys_pressed.add(key)

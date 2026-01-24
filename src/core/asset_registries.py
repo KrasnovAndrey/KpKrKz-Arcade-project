@@ -86,3 +86,8 @@ class LevelPaths:
 
     test_level = str(PROJECT_ROOT / "resources/levels/test_map_3.tmx")
     test_level_2 = str(PROJECT_ROOT / "resources/levels/test_map_2.tmx")
+
+    level_0 = str(PROJECT_ROOT / "resources/levels/level_0.tmx")
+    level_1 = str(PROJECT_ROOT / "resources/levels/level_1.tmx")
+    level_2 = str(PROJECT_ROOT / "resources/levels/level_2.tmx")
+    level_3 = str(PROJECT_ROOT / "resources/levels/level_3.tmx")

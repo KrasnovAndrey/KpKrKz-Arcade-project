@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="75" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="1">
+ <tileset firstgid="1" name="tilemap" tilewidth="48" tileheight="48" spacing="3" tilecount="132" columns="12">
+  <image source="tilemap.png" width="609" height="558"/>
+ </tileset>
+ <layer id="1" name="Ground" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztl8EJwCAMRf8+nlR0no7SURy1J6GEaqo2baQeAoI+v5CviRaAnTQCsHkAXIQL1gNbHpuKhgdSjaXhBtg7um6A7dWt7cOt18JyeSn5KpK5CKS7vnozRxzrOlh6L5av9LB/9rP5SLclX+d9nGJfPemNUh2VzFGtHs7gDen8Upa7OxrOLPFeUZ9IeYPrz5Yn52Slaqj0fyGPn/zjSLIzeoOyLb3ZiG4Ado19nRlge3Sl3/a34wCqBB55
+  </data>
+ </layer>
+ <layer id="2" name="Walls" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztl9kOgjAQRQ/i8oSgPNXtnV8w/v93GWJNmqZjC0GGGptMQpebFji5My2ACigSwgTGVkBpY+c8l8L42tHugQ64Ai1wA2perbP91s73442nHdK0tUZh32qC9z0BZxtbYf3GWXPx+IidoRFYc7k6CtpDhKuen4egvdv5TpkNkynP2lzFvpvEVZFw/rf2ky/OzXOdyPNUPlllylWOPM/FhrbX5Zh/l5BDx3pOav6N1XW/nH+n+L85ascy6bPyzfzr7/f3yeVqc/HJUE1nBjKp4ZPa91/Ne4pmLeoymRISkyHvlHL1EyhWFus=
+  </data>
+ </layer>
+ <layer id="3" name="Spikes" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJzt0cEJADAIQ1Hnyf4Dei8VL6Wh9T8Q8RBEjAAALzUz2TNZAF7a1M+m3fsi139U9Bt7tcwA4JZsnwVB
+  </data>
+ </layer>
+ <layer id="4" name="Finish" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7Dd+BeMigWOVkGTf+Y6AAAAAFC2u5QACw==
+  </data>
+ </layer>
+ <layer id="5" name="Start" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztzkERAAAIA6B1tX8HU+z0AQlIAAAAADrmOvDYAn9oAGQ=
+  </data>
+ </layer>
+ <layer id="6" name="Warrior" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7BZxb8JLOwjIa2CJgDQmesAAAA8smEwAGI=
+  </data>
+ </layer>
+ <layer id="7" name="Archer" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20LL6AAAAAAeBsRlAAB
+  </data>
+ </layer>
+ <layer id="8" name="Barbarian" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20LL6AAAAAAeBsRlAAB
+  </data>
+ </layer>
+ <layer id="9" name="Decorations" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20LL6AAAAAAeBsRlAAB
+  </data>
+ </layer>
+ <layer id="10" name="Collision" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztlEEKACEMA/sy//8sryKLplaQYRPoRTMqJBhxX20Y1Tczq70Qzv66y+wZu8tT9WTWK2zlzdSMiCytV69Y95nBVjJ6xWZk9pz901/nTjJYd1LzUPMlsu6k5qHmS2SzU1UHvng7lQ==
+  </data>
+ </layer>
+ <layer id="11" name="Medals" width="15" height="75">
+  <data encoding="base64" compression="zlib">
+   eJztyzENAAAMw7CiHX8Ie4ah2mFLOZMAX8zVfgEAAOhbNj4BmQ==
+  </data>
+ </layer>
+</map>

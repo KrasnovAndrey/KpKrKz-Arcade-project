@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="48" tileheight="48" infinite="0" nextlayerid="13" nextobjectid="1">
+ <tileset firstgid="1" name="tilemap" tilewidth="48" tileheight="48" spacing="3" tilecount="132" columns="12">
+  <image source="tilemap.png" width="609" height="558"/>
+ </tileset>
+ <layer id="1" name="Ground" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztlV0OgyAQhOcovvskf+fxKD1Kj9ajNE0lWbcMAtLWGB8mGNjwMYu7TACmS93lgdm+x+S8A2ALxOL0vlEWmJfxnpo3O33pfaOnsHw7wm2RPGsAbjoHIXMuV8kdK/y+PBmyLv3qPWtyz7hsfU+et7i9ZIHhF5yjcF3mvs7kN/Y0WY+xXv067qOGc72swCf956VvFsd6WarvesVltd3KlbFmPf/o4dcUcKVkvw2EWRpXw1U+BsbtkecSru7ZrVz9Ho0b3Ba/+u39Z54vfVdPFF20Lg==
+  </data>
+ </layer>
+ <layer id="2" name="Walls" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJzdVdEOgjAMPBD0CRgSHlTknQd/gPj/32WIW1KblXVTNPGSZmwtPVa2awYgC1glrJ8U7y6WA9gRK9j6gY3UfGtSTMG+tQYwAbgCaAAYtt7hic7OGzs6X2+fR+Ib7djbGJrX7emIV1BeDW5KX0tqsHDe3+TVYib14pyOt9qAN4St9lsCuFjbf5HXkPvny70172Jnsndnw4pPMl/dSiFvyLS6I9XGsBhJ31J0MSf3kaMlOsW1L6RloXrUVpt893G2PsO0j+udT8vWdLdQnj2jiKO8VLcnojVursmXyruGVvivKXExvLPwX1PiYng/iZCWUZSCXqTExez3V+fq33hDfWFQ9g5N3MB0MFW3Y/vMWo7YfpLSfx5H4RMK
+  </data>
+ </layer>
+ <layer id="8" name="Decorations" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFtAIuA2Rv0AizN2GA7B0Fo2AUjIJRMApGwSigJwAAV/wBSQ==
+  </data>
+ </layer>
+ <layer id="9" name="Decorations2" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFtADBUNphAOy2YGBg8KGjfcFI7Cgqm+3GwMAQjwW7I2FagBAamUsIuOKRQ05LwXjUjYJRMApGwSgYBaNgeAIA20cF5w==
+  </data>
+ </layer>
+ <layer id="3" name="Start" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6B3tX8HW9y5QQISAICuuQ7AQwtKbwBk
+  </data>
+ </layer>
+ <layer id="4" name="Archer" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFIwkUDrQDBjEYDZtRMApGwSgYBUMFjNZZIxMAAA/rAVQ=
+  </data>
+ </layer>
+ <layer id="5" name="Medals" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4BykEaiWlLUUwtQ296B8MMoIA8MlzQ31EEaFjyc7R0Fo2AUjAJqAwAI/Af5
+  </data>
+ </layer>
+ <layer id="6" name="Warrior" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2D4gsSBdsAoGAWjYFiD0TJmFIyCUUBPAAAVzwDD
+  </data>
+ </layer>
+ <layer id="7" name="Finish" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztziEBAAAIA7Br+gemwh2CLcGS3+Y6AAAAhQV26AAL
+  </data>
+ </layer>
+ <layer id="10" name="Barbarian" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAIB3Awu4AAE=
+  </data>
+ </layer>
+ <layer id="11" name="Spikes" width="30" height="25">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAqGHtAiUmwUjAJqAy08mBIzCYlhs4NSe0fB0AIAc2ICdw==
+  </data>
+ </layer>
+ <layer id="12" name="Collision" width="30" height="25" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztk8sNACAIQ53M/cfyaowgaIvx04QDB/uohJT2K1fF8q39tX62rFx0vpYp5UNzpfxMrmUuBlfbNZvbztDrI7ijO/LeiPQeLW1fTEVzvf/s2dOIa53N6oOac4a76ncTF6kT8n4ujhtZL6oAL6Itxw==
+  </data>
+ </layer>
+</map>
