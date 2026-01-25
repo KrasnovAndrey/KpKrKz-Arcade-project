@@ -253,12 +253,6 @@ class TutorialGameView(GameView):
     def __init__(self, window, level_path: str = LevelPaths.test_level_2):
         super().__init__(window, level_path)
 
-    def on_update(self, delta_time):
-
-        print(self.player.center_x, self.player.center_y)
-
-        super().on_update(delta_time)
-
     def on_draw(self):
         self.clear()
 
