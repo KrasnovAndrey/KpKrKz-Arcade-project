@@ -1,9 +1,12 @@
 import arcade
+from arcade import draw_text
+
 from src.core.asset_registries import LevelPaths, TexturePaths
 from src.constants import TILE_SCALING, BACKGROUND_COLOR, CAMERA_LERP, SPIKES_DAMAGE, HEALTH_PER_HEALTH_BOTTLE
 from src.entities import Player
 from src.entities.enemies import Warrior, Barbarian, Archer
 from src.ui import GameHUD
+from pyglet.graphics import Batch
 
 
 class GameView(arcade.View):
@@ -13,6 +16,7 @@ class GameView(arcade.View):
 
         self.keys_pressed = set()
         self.mouse_buttons_pressed = dict()
+        self.medals = self.window.game_data["medals"]
 
         self.level_finished = False
 
@@ -95,6 +99,9 @@ class GameView(arcade.View):
 
         self.check_finish()
 
+        if not self.player.is_alive:
+            self.restart_level()
+
     def on_draw(self):
         self.clear()
 
@@ -117,7 +124,7 @@ class GameView(arcade.View):
         self.gui_camera.use()
         self.hud.display_health(self.player.current_health)
         self.hud.display_mana(self.player.current_mana)
-        self.hud.display_currency(self.window.game_data["medals"])
+        self.hud.display_currency(self.medals)
 
     def spawn_enemies(self):
         self.spawn_warriors()
@@ -142,7 +149,7 @@ class GameView(arcade.View):
         barbarians_list = self.tile_map.sprite_lists["Barbarian"]
         for enemy in barbarians_list:
             barbarian = Barbarian(player_list=self.player_list, projectiles_list=self.projectile_list,
-                                collision_list=self.collision_list)
+                                  collision_list=self.collision_list)
             barbarian.center_x = enemy.center_x
             barbarian.center_y = enemy.center_y
             self.enemies_list.append(barbarian)
@@ -206,7 +213,7 @@ class GameView(arcade.View):
     def check_player_and_medals_collision(self):
         collision_list = arcade.check_for_collision_with_list(self.player, self.medals_list)
         for medal in collision_list:
-            self.window.game_data["medals"] += 1
+            self.medals += 1
             medal.remove_from_sprite_lists()
 
     def check_player_and_health_bottles_collision(self):
@@ -223,6 +230,10 @@ class GameView(arcade.View):
             self.window.finish_level()
             self.level_finished = True
 
+    def restart_level(self):
+        self.window.load_level(self.window.get_current_level_path())
+        self.window.switch_view_to_game_view()
+
     def on_key_press(self, key, modifiers):
         self.keys_pressed.add(key)
 
@@ -236,3 +247,196 @@ class GameView(arcade.View):
     def on_mouse_release(self, x, y, button, modifiers):
         if button in self.mouse_buttons_pressed:
             del self.mouse_buttons_pressed[button]
+
+
+class TutorialGameView(GameView):
+    def __init__(self, window, level_path: str = LevelPaths.test_level_2):
+        super().__init__(window, level_path)
+
+    def on_update(self, delta_time):
+
+        print(self.player.center_x, self.player.center_y)
+
+        super().on_update(delta_time)
+
+    def on_draw(self):
+        self.clear()
+
+        self.world_camera.use()
+
+        self.ground_list.draw()
+        self.wall_list.draw()
+        self.finish_list.draw()
+        self.decoration_list.draw()
+        self.decoration_list_2.draw()
+
+        self.draw_text_()
+
+        self.health_bottle_list.draw()
+        self.medals_list.draw()
+        self.spikes_list.draw()
+        self.enemies_list.draw()
+
+        self.player_list.draw()
+        self.additional_sprites.draw()
+        self.projectile_list.draw()
+        self.secret_walls_list.draw()
+
+
+
+        self.gui_camera.use()
+        self.hud.display_health(self.player.current_health)
+        self.hud.display_mana(self.player.current_mana)
+        self.hud.display_currency(self.medals)
+
+    def draw_text_(self):
+        batch = Batch()
+
+        text_color = (166, 104, 67)
+
+        text_1 = arcade.Text(
+            "Нажимайте WASD,",
+            215, 260,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_2 = arcade.Text(
+            "чтобы передвигаться.",
+            215, 230,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_3 = arcade.Text(
+            "Не наступайте",
+            215, 800,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_4 = arcade.Text(
+            "на шипы!",
+            215, 770,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_5 = arcade.Text(
+            "Нажмите пробел,",
+            215, 1340,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_6 = arcade.Text(
+            "чтобы сделать рывок.",
+            215, 1310,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_7 = arcade.Text(
+            "Во время рывка",
+            215, 1280,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_9 = arcade.Text(
+            "вы неуязвимы.",
+            215, 1250,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_10 = arcade.Text(
+            "Впереди враг!",
+            215, 1860,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_11 = arcade.Text(
+            "Нажимайте ЛКМ,",
+            215, 1830,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_12 = arcade.Text(
+            "чтобы делать удары.",
+            215, 1800,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_13 = arcade.Text(
+            "Нажимайте ПКМ,",
+            215, 1770,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_14 = arcade.Text(
+            "чтобы использовать магию.",
+            215, 1740,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_15 = arcade.Text(
+            "Это медальки,",
+            215, 2890,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_16 = arcade.Text(
+            "они используются",
+            215, 2860,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_17 = arcade.Text(
+            "для покупок в магазине.",
+            215, 2830,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_18 = arcade.Text(
+            "Пройдите в выход",
+            215, 3400,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        text_19 = arcade.Text(
+            "для завершения уровня.",
+            215, 3370,
+            color=text_color,
+            font_size=20,
+            font_name='Kenney Pixel',
+            batch=batch)
+
+        batch.draw()
+
