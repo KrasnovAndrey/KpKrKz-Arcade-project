@@ -282,8 +282,6 @@ class TutorialGameView(GameView):
         self.projectile_list.draw()
         self.secret_walls_list.draw()
 
-
-
         self.gui_camera.use()
         self.hud.display_health(self.player.current_health)
         self.hud.display_mana(self.player.current_mana)

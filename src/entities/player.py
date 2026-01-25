@@ -90,6 +90,13 @@ class Player(BaseEntity):
         self.step_sound_player = None
         self.step_interval = 0.35
 
+        self.hit_box = arcade.hitbox.RotatableHitBox(points=[
+            (-10, -20),  # Левый нижний
+            (10, -20),  # Правый нижний
+            (10, 6),  # Правый верхний
+            (-10, 6)  # Левый верхний
+        ])
+
     def update(self, delta_time: float):
         super().update(delta_time)
 

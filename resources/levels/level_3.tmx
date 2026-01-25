@@ -10,7 +10,7 @@
  </layer>
  <layer id="3" name="Walls" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJztmN1qwzAMhU+3ZLtqSbrdtFsfYK8Q9v7PNQI2C8I/R5oyVKhAUKey81mOZNkHAIeHFvUI4AnAs9AhAFvWE4B3/Mr6e0rsci7auctnF4Xtlk/KJGxKPi7pULB9JftKu0HBt9p8EToDOItnb2RfaTcp+RhZAHyTtj3Zg89TcgzU+C4GvhHAiyMf4791DlcAH4R+Ovpas75M/A6N9dibj4nfOXGenfha41niY0mcXvHbGi9C/LZE7m8R+bZ7ZmQ+1n9jyjFe+W/s5DEtXysfWET6qFeDMeN5fguZj6nrIvuP3RPuYX29+Wr1tpVvj/03sv+sfKXclHPSNdkw9VivVrPyzZ1aC+SZiKnXLHxL5UyT2+j8z7S9vz9vefD9Hx97PtKqrHVGQ/xq7100feW6aHxmeTezH7Xqclm3l8YrvZe9H9KqPJv18mrtDvAk8tPNqS3PZssm//XGmDY+jnb+gPhWo/Idg/Ptnf886xs2D9bsWrnnL2P/ANafJT0=
+   eJztmN1qwzAMhU87Z7vqSLrdtFsfYK8Q9v7PNQI2Mwf/SJ4yVKhAUCeK8lmOZLkHAIeHFvUE4AjgiTQ4YEv6CuAdv7L9niM7z0U7d752UdjmfCwz2ZRiXNJQsH0RPst2QcG32XwJdAFwpmtvwmfZblbySWQF8C207ckefJaScqDGdxngmwA8G/JJ4rfN4QrgQ6CfhrHWrK8kf0NjPfbmk+TvEjnPRnwtfyP5sUZOq/xt+fOQvy3h/c0jX75neuaTxm+KNcaq/k2dOqbla9WDEeEY9XowiT/LbyHxSfo6z/GT7gn3sL7WfLV+e5Rvj/3Xc/xG+Uq1KdWka7SR9GO9Xm2Ub6mcadIYnfuScVCcGZlvrZxp0hid+5Kx9fdnLQ++/+OTno+0yr3ONJC/2v9dNM/yumhiNvJuyX7U6su5by/5K733aFDPSmM+my10v+Uj0Dzz+nQzGvPZbM3qX8/HnMXY2/kD9K165Ts559u7/ln2N9I6WLNr1Z6/+P4BJC0lcQ==
   </data>
  </layer>
  <layer id="6" name="Decorations" width="40" height="40">
@@ -30,7 +30,7 @@
  </layer>
  <layer id="9" name="Archer" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt17EJAAAIBLFf2f0bJ7AURJLqVrgEuKyGBgAA4AevBwA7GjNaAVQ=
+   eJzt1zENAAAIA0Es439BASshcDe9giaNADbLpgEAALjB1wO+sXtMKUUVAcU=
   </data>
  </layer>
  <layer id="10" name="Barbarian" width="40" height="40">
@@ -50,7 +50,7 @@
  </layer>
  <layer id="11" name="Spikes" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt2DsKACAIANDO0/0P2NIU0mcRg/cgiIaQNKFaA37X51jXonkVVePrwXlWig/4T9RD9BWyqD8AuBO9BSFLRv297O0enPOx+4ejlgHEFwRF
+   eJzt2DEKwCAMBVDP4/0P2KUu5VPaJUZ4DwRxMYQYMGMAp5v3ep6l/S7d41tmyGen+IDzpB6ir1BF/QHAN+kvCFUq6u/PHd5Bng29zYrkrK8LrmoFFw==
   </data>
  </layer>
  <layer id="14" name="Decorations2" width="40" height="40">
@@ -60,7 +60,7 @@
  </layer>
  <layer id="12" name="Medals" width="40" height="40">
   <data encoding="base64" compression="zlib">
-   eJzt2EEKwCAMBEBf6/+f0FPBQ6DgwS5mBnJTXIJCcAzgFnOpJLOor/W75+zuS+wbvbiDtfS+pOcDeJ2er6CD9DlAPuin+t9Iemvy8YcH7IcQvQ==
+   eJzt2EEKwCAMBEBf6/+f4KngwYMotEszA8GTsASFkNaAv+hTJenTuZPvNP/NvcS+UYs3uJbel/R8AI+35yuoIH0OkA/qWe03kv6afHxhALkXEFc=
   </data>
  </layer>
  <layer id="13" name="Collision" width="40" height="40" visible="0">
