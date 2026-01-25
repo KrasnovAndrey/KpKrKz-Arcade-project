@@ -54,7 +54,7 @@ class GameWindow(arcade.Window):
         """Выполнять при заврешении уровня"""
 
         self.game_data["level"] += 1
-        self.game_data["medals"] += self.game_view.medals
+        self.game_data["medals"] = self.game_view.medals
         if self.game_data["level"] < LEVELS_COUNT:
 
             self.load_level(self.get_current_level_path())
