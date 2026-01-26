@@ -2,6 +2,7 @@ import arcade
 from src.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE, BACKGROUND_COLOR, LEVELS_COUNT
 from src.views import GameView, TutorialGameView
 from src.core.asset_registries import LevelPaths
+from src.core.save_storage import init_db, load_game_data, save_game_data
 
 class GameWindow(arcade.Window):
     """Главное окно игры, управляет переключением View"""
@@ -19,12 +20,20 @@ class GameWindow(arcade.Window):
             'speed_modifier': 1
         }
 
-        # TODO: сделать загрузку параметров из БД
+        init_db()
+        loaded_data = load_game_data()
+        if loaded_data is not None:
+            self.game_data.update(loaded_data)
+        else:
+            save_game_data(self.game_data)
 
         self.game_view = None
 
-        self.load_level(self.get_current_level_path())
-        self.switch_view_to_game_view()
+        if self.game_data["level"] >= LEVELS_COUNT:
+            self.reset_progress()
+        else:
+            self.load_level(self.get_current_level_path())
+            self.switch_view_to_game_view()
 
     def get_current_level_path(self):
         paths = {
@@ -56,15 +65,23 @@ class GameWindow(arcade.Window):
         self.game_data["level"] += 1
         self.game_data["medals"] = self.game_view.medals
         if self.game_data["level"] < LEVELS_COUNT:
-
+            save_game_data(self.game_data)
             self.load_level(self.get_current_level_path())
         else:
-            # TODO: Сделать завершение игры после последнего уровня
-            print("[Победа]")
-            exit(0)
+            self.reset_progress()
         self.switch_view_to_game_view()
 
-        # TODO: Сюда вставить сохранение прогресса
+    def reset_progress(self):
+        self.game_data = {
+            'level': 0,
+            'medals': 0,
+            'melee_damage_modifier': 1,
+            'range_damage_modifier': 1,
+            'speed_modifier': 1
+        }
+        save_game_data(self.game_data)
+        self.load_level(self.get_current_level_path())
+        self.switch_view_to_game_view()
 
 
 if __name__ == "__main__":
