@@ -29,6 +29,19 @@ def init_db() -> None:
     db_path = get_save_db_path()
     connection = sqlite3.connect(db_path)
     try:
+        cursor = connection.cursor()
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS game_data (
+                id INTEGER PRIMARY KEY CHECK (id = 1),
+                level INTEGER NOT NULL,
+                medals INTEGER NOT NULL,
+                melee_damage_modifier REAL NOT NULL,
+                range_damage_modifier REAL NOT NULL,
+                speed_modifier REAL NOT NULL
+            )
+            """
+        )
         connection.commit()
     finally:
         connection.close()
