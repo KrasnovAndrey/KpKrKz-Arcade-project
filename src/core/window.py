@@ -131,8 +131,3 @@ class GameWindow(arcade.Window):
         save_game_data(self.game_data)
         self.load_level(self.get_current_level_path())
         self.switch_view_to_game_view()
-
-
-if __name__ == "__main__":
-    game = GameWindow()
-    arcade.run()
