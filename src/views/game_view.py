@@ -102,6 +102,7 @@ class GameView(arcade.View):
         if not self.player.is_alive:
             self.restart_level()
 
+
     def on_draw(self):
         self.clear()
 
@@ -232,9 +233,14 @@ class GameView(arcade.View):
 
     def restart_level(self):
         self.window.load_level(self.window.get_current_level_path())
-        self.window.switch_view_to_game_view()
+        self.window.switch_view_to_death_screen_view()
 
     def on_key_press(self, key, modifiers):
+        if key == arcade.key.ESCAPE and not self.window.menu_opened:
+            self.player.stop_movement()
+            self.keys_pressed.clear()
+            self.window.switch_view_to_menu_view()
+
         self.keys_pressed.add(key)
 
     def on_key_release(self, key, modifiers):
