@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="48" tileheight="48" infinite="0" nextlayerid="12" nextobjectid="1">
+ <tileset firstgid="1" name="tilemap" tilewidth="48" tileheight="48" spacing="3" tilecount="132" columns="12">
+  <image source="tilemap.png" width="609" height="558"/>
+ </tileset>
+ <layer id="1" name="Ground" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJwzZGBgMBzFo3gUj+JRPIpJxADvYUyR
+  </data>
+ </layer>
+ <layer id="2" name="Walls" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzt1LsKgDAMheHfSx3FOqq4+wrF938uEeJmaImZigfO1nyQUtoCnVN7YASOTJ/kzk3ieaVGLwArMDh590yjzFm8KG9jdvISsANnoReUuynJmxeVXaxeUnaxel/ye/V7i/wXHt2AC9jICKg=
+  </data>
+ </layer>
+ <layer id="3" name="Collision" width="20" height="20" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAP7NAwIYCuHhsmRS0xdhILhqN5+MKJXPMYBrl5pPiXkjgaiuZRAkbNGxnmURMDAKgyFkk=
+  </data>
+ </layer>
+ <layer id="4" name="Finish" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA/UGZgYFAZAHtHwSgYBaNgFFAPAAChUwBI
+  </data>
+ </layer>
+ <layer id="5" name="Start" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRQC+QPNAOoCIAAFUkAGQ=
+  </data>
+ </layer>
+ <layer id="6" name="Warrior" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFgxUkDrQDRgHNwGjcjoLhAADWSgDD
+  </data>
+ </layer>
+ <layer id="7" name="Archer" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF6KBwoB0wCkbBKBgxYCiXNwChxgDj
+  </data>
+ </layer>
+ <layer id="8" name="Barbarian" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFpICIgXbAKMAKRuNlFIwC+gMA9R4AsQ==
+  </data>
+ </layer>
+ <layer id="9" name="Spikes" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBjZQAuKB6t5o2AUUBNoUTmNDnbzRgFtAQBLIgIj
+  </data>
+ </layer>
+ <layer id="10" name="Medals" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFIxmkQfFgNW8UYIKhGmdD1d2jADcAAP0kBMk=
+  </data>
+ </layer>
+ <layer id="11" name="Decorations" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUUAJcqGxe0Kh5FAFXKps3CnADAAYoAdI=
+  </data>
+ </layer>
+</map>

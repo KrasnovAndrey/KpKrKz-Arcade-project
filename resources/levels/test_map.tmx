@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="48" tileheight="48" infinite="0" nextlayerid="5" nextobjectid="1">
+ <tileset firstgid="1" name="tiny_dungeon_x3" tilewidth="48" tileheight="48" spacing="3" tilecount="132" columns="12">
+  <image source="tilemap.png" width="609" height="558"/>
+ </tileset>
+ <layer id="1" name="ground" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzVkLENwCAMwPwPE0n4h9M4tStUNCCokBi8RLEcJQLxUhJkBQzQF/UsdVyFPNNQKD03OI44rk127aO7c7M4Thi4O91V1/uVtHu/dk/zABMdNK0=
+  </data>
+ </layer>
+ <layer id="2" name="walls" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJzVk7sKgDAMAC9WcKoUnOqju///gy4RstRSIoiBg5DkCIVGAHkgNvoDEJTJ5KFSH407A6eyAAU4DEXr90wCsnF7IqmXHa5n7xdudO6NP3vvG+4KbB3sjfsQ8+9qvQuRTATa
+  </data>
+ </layer>
+ <layer id="3" name="collision" width="15" height="15" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAM2JGBqaWXVHeO6h3VS4xectMkuQAAXwgOSw==
+  </data>
+ </layer>
+ <layer id="4" name="start" width="15" height="15">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFIxXYDbQDRgEYAABidAA/
+  </data>
+ </layer>
+</map>

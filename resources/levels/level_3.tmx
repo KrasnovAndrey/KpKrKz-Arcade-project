@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="48" tileheight="48" infinite="0" nextlayerid="16" nextobjectid="1">
+ <tileset firstgid="1" name="tilemap" tilewidth="48" tileheight="48" spacing="3" tilecount="132" columns="12">
+  <image source="tilemap.png" width="609" height="558"/>
+ </tileset>
+ <layer id="2" name="Ground" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztmFEOgjAMhnsU3/fEmJzHo3gUj+ZRjNGZprZdO0sYkYc/Lg7Gt5/uhzEBwHTo0Io6A1xnACiv9uY8VDPACbVvW/P08GGPZyLqez0W99NztD56DzFfEfjwMVUJtRfEtDT8SI3+p0fYp3rtpPhXGD46pjSXRNqpwUj5SnD9Vb4seJfRLzePIvgXzSfdW69/I/JJ47XWL7fmtPUmsWmMPXyaJ++1+9EisGjC/Nx4Vj6u5q1eeVm5cT35Z2Xr4bXWpoVPqxdP/eUGgyYtn618ueHRL3z4GUPHpDURnX8ePot/BeCi8WXCR1nX5uv1Lwfx0YyR+DJi4hilrPql/jj11p/EVwDukXye+8v5GeFfzZcR3/+rJ3lwvtH9m8g+w7oHshyL/+vZ43reD6ik9RCdL97r9M4lOv8i6mb0uh6Vbw+5+g98nm8+ntyrezMpV6352Pr+Ikn6huE5h2H5ej/U8iUy/4w1MWSt7lEPNu1jIQ==
+  </data>
+ </layer>
+ <layer id="3" name="Walls" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztmN1qwzAMhU87Z7vqSLrdtFsfYK8Q9v7PNQI2Mwf/SJ4yVKhAUCeK8lmOZLkHAIeHFvUE4AjgiTQ4YEv6CuAdv7L9niM7z0U7d752UdjmfCwz2ZRiXNJQsH0RPst2QcG32XwJdAFwpmtvwmfZblbySWQF8C207ckefJaScqDGdxngmwA8G/JJ4rfN4QrgQ6CfhrHWrK8kf0NjPfbmk+TvEjnPRnwtfyP5sUZOq/xt+fOQvy3h/c0jX75neuaTxm+KNcaq/k2dOqbla9WDEeEY9XowiT/LbyHxSfo6z/GT7gn3sL7WfLV+e5Rvj/3Xc/xG+Uq1KdWka7SR9GO9Xm2Ub6mcadIYnfuScVCcGZlvrZxp0hid+5Kx9fdnLQ++/+OTno+0yr3ONJC/2v9dNM/yumhiNvJuyX7U6su5by/5K733aFDPSmM+my10v+Uj0Dzz+nQzGvPZbM3qX8/HnMXY2/kD9K165Ts559u7/ln2N9I6WLNr1Z6/+P4BJC0lcQ==
+  </data>
+ </layer>
+ <layer id="6" name="Decorations" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztlksKwzAMRHWS3KE+QT6rJt2ULrvI/W/RjQNmsGLRj5S28yBItmRQBiNLhBDyb4zZDmARjI9K3qeYwGpxb1APTReMR+m3kRp5XnqifoNSWy3vGfpsu2KvU3KlooOmYyvPykVEbsX6LiLn7PfKmaOj3TVr3Iuk+N/EUeuOqsv6bmFf8erPp2wnWG9gf/F+5/Z0Sca8V5gLv9b/UDfrfPAOHeeiN2tY3y2P+Wqp7LXuHxI1ZxFCCCHkd1mDvmv0j5NQHsXxICU=
+  </data>
+ </layer>
+ <layer id="7" name="Start" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6B3tX8HW9zNQQISAAAAAAD4b64DVC3Y0ABk
+  </data>
+ </layer>
+ <layer id="8" name="Warrior" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt1EENAAAIxLCzin8TmIAQklbBXksAAAAA+KSuAwCW+RwTGq+lAMM=
+  </data>
+ </layer>
+ <layer id="9" name="Archer" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt1zENAAAIA0Es439BASshcDe9giaNADbLpgEAALjB1wO+sXtMKUUVAcU=
+  </data>
+ </layer>
+ <layer id="10" name="Barbarian" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt0UEJAAAIBEFj2j+JFQ58iDCTYGGrAIDv+jqAyPaTzwAAAJAbmfABCQ==
+  </data>
+ </layer>
+ <layer id="4" name="SecretWalls" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztxbEJACAQBMEDCzDXCuy/QZMPxAY0mIFlEwAAAOA2kszqR+3oRytJrwMAvLABuK4Auw==
+  </data>
+ </layer>
+ <layer id="5" name="Finish" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzkENACAMALH7D/96kcFCWgUtfjDVeZ0AAAAAAIAlLi72ABg=
+  </data>
+ </layer>
+ <layer id="11" name="Spikes" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt2DEKwCAMBVDP4/0P2KUu5VPaJUZ4DwRxMYQYMGMAp5v3ep6l/S7d41tmyGen+IDzpB6ir1BF/QHAN+kvCFUq6u/PHd5Bng29zYrkrK8LrmoFFw==
+  </data>
+ </layer>
+ <layer id="14" name="Decorations2" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztzgENAAAIA6C3sn8zY1w3SEACAAAAAAD3TDvAawuUwAA4
+  </data>
+ </layer>
+ <layer id="12" name="Medals" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt2EEKwCAMBEBf6/+f4KngwYMotEszA8GTsASFkNaAv+hTJenTuZPvNP/NvcS+UYs3uJbel/R8AI+35yuoIH0OkA/qWe03kv6afHxhALkXEFc=
+  </data>
+ </layer>
+ <layer id="13" name="Collision" width="40" height="40" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJztltEOgCAIRf2y/v+zemeKXAG5lmdjbY30SGS2dpnxiGBCOrE59lxO85Pvf1cgfta1ynG1ebS8DL9IvlY/tG+8IH6ecZnqp3mgrPrJez3/KL/ReAzfr8b187Hil9l/sz3M6me5os9ZWPHzku1XXT9tL4zA46f1KEv9Rr4M9dNyGPws5wPkPGbZ41C/We7Ofw563rLkZNZvB9fPB+qXFdo81SD7QgV/8avqP+uzbHVvgX5ZazutfoxxAi/YWFjj
+  </data>
+ </layer>
+ <layer id="15" name="HealthBottle" width="40" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt1rEJAAAMw7Ac3f/p3AsCRbrAoxOAP6YdAABQ4oMAAOBaShIA6Q==
+  </data>
+ </layer>
+</map>
