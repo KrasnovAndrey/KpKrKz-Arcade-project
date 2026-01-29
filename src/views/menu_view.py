@@ -28,15 +28,42 @@ class MenuView(arcade.View):
             (0, 0, 0, 180)
         )
 
-        arcade.draw_text(
-            "Test Menu Text",
-            self.window.width // 2,
-            self.window.height // 2,
-            arcade.color.WHITE,
-            30,
-            anchor_x="center",
-            anchor_y="center"
-        )
+        center_x = self.window.width // 2
+        center_y = self.window.height // 2
+        button_width = 260
+        button_height = 50
+        gap = 20
+
+        labels = [
+            "Продолжить",
+            "Новая игра",
+            "Магазин",
+            "Выйти",
+        ]
+
+        total_height = len(labels) * button_height + (len(labels) - 1) * gap
+        start_y = center_y + total_height // 2 - button_height // 2
+
+        for index, text in enumerate(labels):
+            y = start_y - index * (button_height + gap)
+            arcade.draw_rect_filled(
+                arcade.rect.XYWH(
+                    center_x,
+                    y,
+                    button_width,
+                    button_height,
+                ),
+                (50, 50, 80, 230)
+            )
+            arcade.draw_text(
+                text,
+                center_x,
+                y,
+                arcade.color.WHITE,
+                20,
+                anchor_x="center",
+                anchor_y="center",
+            )
 
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE and self.window.menu_opened:
