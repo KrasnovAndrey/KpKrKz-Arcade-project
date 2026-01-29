@@ -185,6 +185,15 @@ class GameView(arcade.View):
         self.player.center_x = x
         self.player.center_y = y
 
+        melee_modifier = self.window.game_data.get("melee_damage_modifier", 1)
+        range_modifier = self.window.game_data.get("range_damage_modifier", 1)
+        speed_modifier = self.window.game_data.get("speed_modifier", 1)
+
+        self.player.melee_damage *= melee_modifier
+        self.player.range_damage *= range_modifier
+        self.player.original_speed *= speed_modifier
+        self.player.speed = self.player.original_speed
+
         self.additional_sprites.extend(self.player.setup_additional_sprites())
 
         physics_engine = arcade.PhysicsEngineSimple(self.player, self.collision_list)

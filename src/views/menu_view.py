@@ -148,6 +148,37 @@ class MenuView(arcade.View):
                             self.message = "Недостаточно медалей"
                         else:
                             self.message = "Здоровье уже полное"
+                    elif text == "Усиление ближнего урона (40)":
+                        game_view = self.window.game_view
+                        player = game_view.player
+                        if game_view.medals >= 40:
+                            game_view.medals -= 40
+                            self.window.game_data["melee_damage_modifier"] *= 1.2
+                            player.melee_damage *= 1.2
+                            self.message = ""
+                        else:
+                            self.message = "Недостаточно медалей"
+                    elif text == "Усиление дальнего урона (40)":
+                        game_view = self.window.game_view
+                        player = game_view.player
+                        if game_view.medals >= 40:
+                            game_view.medals -= 40
+                            self.window.game_data["range_damage_modifier"] *= 1.2
+                            player.range_damage *= 1.2
+                            self.message = ""
+                        else:
+                            self.message = "Недостаточно медалей"
+                    elif text == "Скорость (40)":
+                        game_view = self.window.game_view
+                        player = game_view.player
+                        if game_view.medals >= 40:
+                            game_view.medals -= 40
+                            self.window.game_data["speed_modifier"] *= 1.2
+                            player.original_speed *= 1.2
+                            player.speed = player.original_speed
+                            self.message = ""
+                        else:
+                            self.message = "Недостаточно медалей"
                     elif text == "Назад":
                         self.mode = "menu"
                         self.message = ""

@@ -34,7 +34,12 @@ class CheatGameView(GameView):
             ("speed_boost", x, y - 2 * (bh + gap), w, bh),
             ("infinite_mana", x, y - 3 * (bh + gap), w, bh),
             ("add_medals", x, y - 4 * (bh + gap), w, bh),
+            ("kill_enemies", x, y - 5 * (bh + gap), w, bh),
+            ("finish_level", x, y - 6 * (bh + gap), w, bh),
         ]
+
+        self.player.dash_duration *= 3
+        self.player.dash_speed_multiplier *= 3
 
     def update_physics(self):
         for engine in self.physics_engines:
@@ -59,6 +64,13 @@ class CheatGameView(GameView):
         super().on_draw()
         self.draw_cheat_panel()
 
+    def on_key_press(self, key, modifiers):
+        super().on_key_press(key, modifiers)
+        if key == arcade.key.SPACE:
+            if self.player.change_x != 0 or self.player.change_y != 0:
+                self.player.dash_cooldown_timer = 0
+                self.player.dash()
+
     def draw_cheat_panel(self):
         for name, x, y, w, h in self.cheat_buttons:
             if name == "god_mode":
@@ -73,9 +85,15 @@ class CheatGameView(GameView):
             elif name == "infinite_mana":
                 active = self.cheats.infinite_mana
                 label = "[M] Infinite mana"
-            else:
+            elif name == "add_medals":
                 active = False
                 label = "[+] +100 medals"
+            elif name == "kill_enemies":
+                active = False
+                label = "[K] Kill enemies"
+            else:
+                active = False
+                label = "[F] Finish level"
             color = arcade.color.GREEN if active else arcade.color.RED
             arcade.draw_text(label, x, y + 6, color, 14)
 
@@ -93,6 +111,11 @@ class CheatGameView(GameView):
                     self.cheats.infinite_mana = not self.cheats.infinite_mana
                 elif name == "add_medals":
                     self.cheats.add_medals += 100
+                elif name == "kill_enemies":
+                    for enemy in list(self.enemies_list):
+                        enemy.remove_from_sprite_lists()
+                elif name == "finish_level":
+                    self.window.finish_level()
                 break
 
 
