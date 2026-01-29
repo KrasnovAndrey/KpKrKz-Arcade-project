@@ -7,6 +7,8 @@ class MenuView(arcade.View):
         self.sprite_lists = sprite_lists
         self.world_camera = world_camera
         self.gui_camera = gui_camera
+        self.mode = "menu"
+        self.message = ""
 
     def on_draw(self):
         self.clear()
@@ -34,12 +36,21 @@ class MenuView(arcade.View):
         button_height = 50
         gap = 20
 
-        labels = [
-            "Продолжить",
-            "Новая игра",
-            "Магазин",
-            "Выйти",
-        ]
+        if self.mode == "menu":
+            labels = [
+                "Продолжить",
+                "Новая игра",
+                "Магазин",
+                "Выйти",
+            ]
+        else:
+            labels = [
+                "Отхил (30)",
+                "Усиление ближнего урона (40)",
+                "Усиление дальнего урона (40)",
+                "Скорость (40)",
+                "Назад",
+            ]
 
         total_height = len(labels) * button_height + (len(labels) - 1) * gap
         start_y = center_y + total_height // 2 - button_height // 2
@@ -65,6 +76,17 @@ class MenuView(arcade.View):
                 anchor_y="center",
             )
 
+        if self.message:
+            arcade.draw_text(
+                self.message,
+                center_x,
+                center_y - total_height // 2 - 40,
+                arcade.color.RED,
+                16,
+                anchor_x="center",
+                anchor_y="center",
+            )
+
     def on_key_press(self, key, modifiers):
         if key == arcade.key.ESCAPE and self.window.menu_opened:
             self.window.switch_view_to_game_view()
@@ -76,12 +98,21 @@ class MenuView(arcade.View):
         button_height = 50
         gap = 20
 
-        labels = [
-            "Продолжить",
-            "Новая игра",
-            "Магазин",
-            "Выйти",
-        ]
+        if self.mode == "menu":
+            labels = [
+                "Продолжить",
+                "Новая игра",
+                "Магазин",
+                "Выйти",
+            ]
+        else:
+            labels = [
+                "Отхил (30)",
+                "Усиление ближнего урона (40)",
+                "Усиление дальнего урона (40)",
+                "Скорость (40)",
+                "Назад",
+            ]
 
         total_height = len(labels) * button_height + (len(labels) - 1) * gap
         start_y = center_y + total_height // 2 - button_height // 2
@@ -94,9 +125,30 @@ class MenuView(arcade.View):
             top = y_button + button_height / 2
 
             if left <= x <= right and bottom <= y <= top:
-                if text == "Продолжить":
-                    if self.window.menu_opened:
-                        self.window.switch_view_to_game_view()
-                elif text == "Выйти":
-                    self.window.close()
+                if self.mode == "menu":
+                    if text == "Продолжить":
+                        if self.window.menu_opened:
+                            self.window.switch_view_to_game_view()
+                    elif text == "Новая игра":
+                        self.window.reset_progress()
+                    elif text == "Магазин":
+                        self.mode = "shop"
+                        self.message = ""
+                    elif text == "Выйти":
+                        self.window.close()
+                else:
+                    if text == "Отхил (30)":
+                        game_view = self.window.game_view
+                        player = game_view.player
+                        if game_view.medals >= 30 and player.current_health < player.max_health:
+                            game_view.medals -= 30
+                            player.current_health = player.max_health
+                            self.message = ""
+                        elif game_view.medals < 30:
+                            self.message = "Недостаточно медалей"
+                        else:
+                            self.message = "Здоровье уже полное"
+                    elif text == "Назад":
+                        self.mode = "menu"
+                        self.message = ""
                 break
